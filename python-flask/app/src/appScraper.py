@@ -16,51 +16,51 @@ def getMedicationInfo(medication):
     result = request.read()
     soup = BeautifulSoup(result, 'html.parser')
 
-    searchResults = soup.find_all('h1')
-    searchResultList = []
-    for i in searchResults:
-        searchResultList.append(str(i.a.get('href')))
-
-    if searchResultList[0]:
-        medicationURL = searchResultList[0]
-    else:
+    if " returned 0 results." in soup:
         return json.dumps({'error':'try again'})
+    else:
+        searchResults = soup.find_all('h1')
+        searchResultList = []
+        for i in searchResults:
+            searchResultList.append(str(i.a.get('href')))
 
-    request1 = urllib2.urlopen(medicationURL)
-    result1 = request1.read()
-    soup1 = BeautifulSoup(result1, 'html.parser')
+        medicationURL = searchResultList[0]
 
-    sections = soup1.find('section', class_='drug-monograph-section')
-    headings = sections.find_all('h2')
-    paragraphs = sections.find_all('p')
+        request1 = urllib2.urlopen(medicationURL)
+        result1 = request1.read()
+        soup1 = BeautifulSoup(result1, 'html.parser')
 
-    pIndex = 0
-    medicationInfo = {}
-    newHTML = ""
-    for i in headings:
-        h2 = i.get_text()
-        if h2 in dosageHeadings:
-            #p = paragraphs[pIndex]
-            p = i.find_next("p")
-            pText = p.get_text()
-            h2 = h2.strip(':')
-            #print (h2 + " " + p.get_text())
-            #medicationInfo.append(h2 + " " + p.get_text())
-            medicationInfo[h2.strip(':')] = pText
+        sections = soup1.find('section', class_='drug-monograph-section')
+        headings = sections.find_all('h2')
+        paragraphs = sections.find_all('p')
 
-            # if 'once daily' in pText:
-            #     medicationInfo[h2.strip(':') + " dosage"] += "once daily"
-            # elif 'every ' and ' hours' in pText:
-            #     medicationInfo[h2.strip(':')]
-            #newHTML = newHTML + str(i) + str(p)
-        #if 'How Supplied' in h2:
-            #medicationInfo['mg per pill'] = paragraphs[pIndex].get_text()
-            # pillSize = re.search('(?:\d+\.)?\d+mg', i.find_next("p").get_text())
-            # if pillSize != '':
-            #     medicationInfo['mg per pill'] = pillSize.group(0)
-              
-        # medicationInfo['mg per pill regex'] = re.search(r'(?:\d*\.)?\d+mg', paragraphs[pIndex].get_text()).group()
-        pIndex += 1
+        pIndex = 0
+        medicationInfo = {}
+        newHTML = ""
+        for i in headings:
+            h2 = i.get_text()
+            if h2 in dosageHeadings:
+                #p = paragraphs[pIndex]
+                p = i.find_next("p")
+                pText = p.get_text()
+                h2 = h2.strip(':')
+                #print (h2 + " " + p.get_text())
+                #medicationInfo.append(h2 + " " + p.get_text())
+                medicationInfo[h2.strip(':')] = pText
+
+                # if 'once daily' in pText:
+                #     medicationInfo[h2.strip(':') + " dosage"] += "once daily"
+                # elif 'every ' and ' hours' in pText:
+                #     medicationInfo[h2.strip(':')]
+                #newHTML = newHTML + str(i) + str(p)
+            #if 'How Supplied' in h2:
+                #medicationInfo['mg per pill'] = paragraphs[pIndex].get_text()
+                # pillSize = re.search('(?:\d+\.)?\d+mg', i.find_next("p").get_text())
+                # if pillSize != '':
+                #     medicationInfo['mg per pill'] = pillSize.group(0)
+                  
+            # medicationInfo['mg per pill regex'] = re.search(r'(?:\d*\.)?\d+mg', paragraphs[pIndex].get_text()).group()
+            pIndex += 1
 
     #return newHTML
     return json.dumps(medicationInfo)

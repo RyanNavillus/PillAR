@@ -141,13 +141,23 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
                     let plaque = SCNBox(width: 0.1, height: 0.14, length: 0.01, chamferRadius: 0.005)
                     plaque.firstMaterial?.diffuse.contents = UIColor(white: 1.0, alpha: 0.6)
                     node.geometry = plaque
-                    node.position.y += 0.1
+                    node.position.y += 0.13
+                    let imageView = UIView(frame: CGRect(x: 0, y: 0, width: 600, height: 800))
+                    imageView.backgroundColor = UIColor.white
+                    imageView.alpha = 0.8
+                    let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: imageView.frame.width, height: 100))
+                    titleLabel.textAlignment = .center
+                    titleLabel.font = UIFont(name: "Avenir-Heavy", size: 60)
+                    titleLabel.text = result
+                    imageView.addSubview(titleLabel)
+                    let texture = UIImage.imageWithView(view: imageView)
+                    
                     let infoNode = SCNNode()
                     let infoGeometry = SCNPlane(width: 0.09, height: 0.13)
-                    infoGeometry.firstMaterial?.diffuse.contents = #imageLiteral(resourceName: "test")
+                    infoGeometry.firstMaterial?.diffuse.contents = texture
                     infoNode.geometry = infoGeometry
-                    infoNode.position.y += 0.1
-                    infoNode.position.z += 0.0052
+                    infoNode.position.y += 0.13
+                    infoNode.position.z += 0.0054
                     textNode.addChildNode(node)
                     textNode.addChildNode(infoNode)
                 }
@@ -180,7 +190,8 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
         // Centre Node - to Centre-Bottom point
         bubbleNode.pivot = SCNMatrix4MakeTranslation( (maxBound.x - minBound.x)/2, minBound.y, bubbleDepth/2)
         // Reduce default text size
-        bubbleNode.scale = SCNVector3Make(0.2, 0.2, 0.2)
+        bubbleNode.scale = SCNVector3Make(0.15, 0.15, 0.15)
+        bubbleNode.position.y += 0.20
         
         // CENTRE POINT NODE
         let sphere = SCNSphere(radius: 0.005)
@@ -283,6 +294,17 @@ extension UIImage {
         }
         
         return nil
+    }
+}
+
+
+extension UIImage {
+    class func imageWithView(view: UIView) -> UIImage {
+        UIGraphicsBeginImageContextWithOptions(view.bounds.size, view.isOpaque, 0.0)
+        view.drawHierarchy(in: view.bounds, afterScreenUpdates: true)
+        let img = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return img!
     }
 }
 

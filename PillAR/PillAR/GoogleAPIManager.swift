@@ -31,7 +31,9 @@ class GoogleAPIManager {
     func identifyDrug(image: UIImage, completionHandler: @escaping ((String?) -> ())) {
         // Base64 encode the image and create the request
         let binaryImagePacket = base64EncodeImage(image)
-        createRequest(with: binaryImagePacket, completionHandler: completionHandler)
+        
+        //FIX ME
+        //createRequest(with: binaryImagePacket, completionHandler: completionHandler)
     }
     
     func resizeImage(_ imageSize: CGSize, image: UIImage) -> Data {
@@ -56,7 +58,7 @@ class GoogleAPIManager {
         return (imagedata.base64EncodedString(options: .endLineWithCarriageReturn), image.size)
     }
     
-    func createRequest(with imageBase64: (String, CGSize), completionHandler: @escaping ((String?) -> ())) {
+    func createRequest(with imageBase64: (String, CGSize), completionHandler: @escaping (((String, Int, Int, Int)) -> ())) {
         // Create our request URL
         
         var request = URLRequest(url: googleURL)
@@ -113,17 +115,6 @@ class GoogleAPIManager {
                     if let logoResults = json["responses"][0]["logoAnnotations"].array, logoResults.count > 0 {
                         for item in logoResults{
                             if let description = item["description"].string {
-//                            let verticiesArr = item["boundingPoly"]["vertices"].array{
-//                                var total_x = 0.0
-//                                var total_y = 0.0
-//                                var num = 0.0
-//                                for vertex in verticiesArr{
-//                                    if let xVal = vertex["x"].double, let yVal = vertex["y"].double{
-//                                        total_x += xVal
-//                                        total_y += yVal
-//                                        num += 1
-//                                    }
-//                                }
                                 responses.append(description)
                             }
                         }
@@ -136,23 +127,30 @@ class GoogleAPIManager {
                             }
                         }
                     }
+                    let apiManager = HasuraAPIManager.shared()
+                    var completed = false
                     
-//                    if responses.count > 1 {
-//                        var index_closest_to_center = 0
-//                        var minDistance = Double.infinity
-//                        for i in 0..<responses.count{
-//                            let item = responses[i]
-//                            if self.distanceFromPointToCenterSize(p1: item.1, s2: item.2) < minDistance{
-//                                minDistance = self.distanceFromPointToCenterSize(p1: item.1, s2: item.2)
-//                                index_closest_to_center = i
-//                            }
-//                        }
-//                        let closest = responses[index_closest_to_center]
-//                        responses = Array<(String, CGPoint, CGSize)>()
-//                        responses.append(closest)
-//                    }
-        
-                    completionHandler(responses.first)
+                    // Call hasura api for each result from Google
+                    for response in responses {
+                        let handler = {
+                            (data: (frequency: Int, maximum: Int, dosage: Int)?) in
+                            
+                            if completed {
+                                return
+                            }
+                            
+                            if let data = data {
+                                completed = true
+                                completionHandler((response, data.frequency, data.maximum, data.dosage))
+                            }
+                            
+                            //completionHandler(nil) if no data is valid
+                        }
+
+                        // For each item returned by Google, get its usage information
+                        apiManager.getUsageForDrug("\(response)", completionHandler: handler)
+                    }
+                
                 })
             }
             

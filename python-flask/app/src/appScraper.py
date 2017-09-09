@@ -37,7 +37,7 @@ def getMedicationInfo(medication):
         h2 = i.get_text()
         if h2 in dosageHeadings:
             p = paragraphs[pIndex]
-            print (h2 + " " + p.get_text())
+            #print (h2 + " " + p.get_text())
             medicationInfo.append(h2 + " " + p.get_text())
             newHTML = newHTML + str(i) + str(p)
         pIndex += 1

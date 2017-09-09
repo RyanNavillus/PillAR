@@ -24,15 +24,15 @@ class GoogleAPIManager {
         return sharedInstance
     }
     
-    func identifyDrug(image: UIImage) -> (label: NSString, location: CGPoint) {
-        let requestURL = baseURL.URLByAppendingPathComponent("/v1/images:annotate").URLByAppendingPathComponent("?key=\(apiKey)")
-        let request = NSMutableURLRequest(URL: requestURL) // URL for accessing vision api
-        let session = NSURLSession.sharedSession()
-        
-        let task = session.dataTaskWithRequest(request) {
-            data, response, error -> Void in
-            //let json = NSJSONSerialization.JSONObjectWithData(data, options: <#T##NSJSONReadingOptions#>)
-        }
-        return (label: "", location: CGPoint())
-    }
+//    func identifyDrug(image: UIImage) -> (label: NSString, location: CGPoint) {
+//        let requestURL = baseURL.URLByAppendingPathComponent("/v1/images:annotate").URLByAppendingPathComponent("?key=\(apiKey)")
+//        let request = NSMutableURLRequest(URL: requestURL) // URL for accessing vision api
+//        let session = URLSession.sharedSession()
+//
+//        let task = session.dataTaskWithRequest(request) {
+//            data, response, error -> Void in
+//            //let json = NSJSONSerialization.JSONObjectWithData(data, options: <#T##NSJSONReadingOptions#>)
+//        }
+//        return (label: "", location: CGPoint())
+//    }
 }

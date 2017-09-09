@@ -13,7 +13,8 @@
 		3B17CD1F1F639DB90011CE7E /* PillAR.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3B17CD1D1F639DB90011CE7E /* PillAR.xcdatamodeld */; };
 		3B17CD211F639DB90011CE7E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B17CD201F639DB90011CE7E /* Assets.xcassets */; };
 		3B17CD241F639DB90011CE7E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B17CD221F639DB90011CE7E /* LaunchScreen.storyboard */; };
-		3B17CD2C1F639FDA0011CE7E /* GoogleAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B17CD2B1F639FDA0011CE7E /* GoogleAPIManager.swift */; settings = {ASSET_TAGS = (); }; };
+		3B17CD2C1F639FDA0011CE7E /* GoogleAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B17CD2B1F639FDA0011CE7E /* GoogleAPIManager.swift */; };
+		BB260F6D1F63C5AC006743ED /* ARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB260F6C1F63C5AC006743ED /* ARViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		3B17CD231F639DB90011CE7E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3B17CD251F639DB90011CE7E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3B17CD2B1F639FDA0011CE7E /* GoogleAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleAPIManager.swift; sourceTree = "<group>"; };
+		BB260F6C1F63C5AC006743ED /* ARViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +63,7 @@
 				3B17CD161F639DB90011CE7E /* AppDelegate.swift */,
 				3B17CD181F639DB90011CE7E /* ViewController.swift */,
 				3B17CD2B1F639FDA0011CE7E /* GoogleAPIManager.swift */,
+				BB260F6C1F63C5AC006743ED /* ARViewController.swift */,
 				3B17CD1A1F639DB90011CE7E /* Main.storyboard */,
 				3B17CD201F639DB90011CE7E /* Assets.xcassets */,
 				3B17CD221F639DB90011CE7E /* LaunchScreen.storyboard */,
@@ -101,6 +104,7 @@
 				TargetAttributes = {
 					3B17CD121F639DB90011CE7E = {
 						CreatedOnToolsVersion = 7.0;
+						DevelopmentTeam = 9XWYL3K4YT;
 					};
 				};
 			};
@@ -144,6 +148,7 @@
 				3B17CD1F1F639DB90011CE7E /* PillAR.xcdatamodeld in Sources */,
 				3B17CD171F639DB90011CE7E /* AppDelegate.swift in Sources */,
 				3B17CD2C1F639FDA0011CE7E /* GoogleAPIManager.swift in Sources */,
+				BB260F6D1F63C5AC006743ED /* ARViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -256,10 +261,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 9XWYL3K4YT;
 				INFOPLIST_FILE = PillAR/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ryansullivan.PillAR;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -267,10 +275,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 9XWYL3K4YT;
 				INFOPLIST_FILE = PillAR/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ryansullivan.PillAR;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -293,6 +304,7 @@
 				3B17CD2A1F639DB90011CE7E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

@@ -20,8 +20,11 @@ def getMedicationInfo(medication):
     for i in searchResults:
         searchResultList.append(str(i.a.get('href')))
 
+    if searchResultList[0]:
+        medicationURL = searchResultList[0]
+    else:
+        return json.dumps({'error':'try again'})
 
-    medicationURL = searchResultList[0]
     request1 = urllib2.urlopen(medicationURL)
     result1 = request1.read()
     soup1 = BeautifulSoup(result1, 'html.parser')
@@ -37,12 +40,20 @@ def getMedicationInfo(medication):
         h2 = i.get_text()
         if h2 in dosageHeadings:
             p = paragraphs[pIndex]
+            pText = p.get_text()
+            h2 = h2.strip(':')
             #print (h2 + " " + p.get_text())
             #medicationInfo.append(h2 + " " + p.get_text())
-            medicationInfo[h2.strip(':')] = p.get_text()
-            if 'once daily' in p.get_text():
-                medicationInfo[h2.strip(':') + " dosage"] = "once daily"
+            medicationInfo[h2.strip(':')] = pText
+
+            # if 'once daily' in pText:
+            #     medicationInfo[h2.strip(':') + " dosage"] += "once daily"
+            # elif 'every ' and ' hours' in pText:
+            #     medicationInfo[h2.strip(':')]
             #newHTML = newHTML + str(i) + str(p)
+        if 'How Supplied' in h2:
+            medicationInfo['mg per pill'] = paragraphs[pIndex].get_text()
+            medicationInfo['mg per pill regex'] = re.search(r'(?:\d*\.)?\d+mg', paragraphs[pIndex].get_text()).group()
         pIndex += 1
 
     #return newHTML

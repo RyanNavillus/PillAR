@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftyJSON
 
 class HasuraAPIManager {
     var hasuraURL: URL {
@@ -24,7 +25,7 @@ class HasuraAPIManager {
         return sharedInstance
     }
     
-    func getUsageForDrug(_ drug: String, completionHandler: ((String)->(frequency: Int, maximum: Int, size: Int)?)) {
+    func getUsageForDrug(_ drug: String, completionHandler: @escaping (((Int, Int, Int)?) ->())) {
         
         // Create our request URL
         
@@ -58,7 +59,7 @@ class HasuraAPIManager {
                         }
                     }
                     
-                    completionHandler(responses.first)
+                    completionHandler((1,1,1))
                 })
             }
             

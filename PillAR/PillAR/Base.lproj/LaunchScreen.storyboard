@@ -5,6 +5,7 @@
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13165.3"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -19,7 +20,20 @@
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
                         <rect key="frame" x="0.0" y="0.0" width="834" height="1112"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pillarlogo" translatesAutoresizingMaskIntoConstraints="NO" id="mNN-mZ-bzb">
+                                <rect key="frame" x="208.5" y="406" width="417" height="300"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="300" id="kGe-rf-y6E"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="mNN-mZ-bzb" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="3JO-kt-UUJ"/>
+                            <constraint firstItem="mNN-mZ-bzb" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="G2s-v1-WfN"/>
+                            <constraint firstItem="mNN-mZ-bzb" firstAttribute="width" secondItem="Ze5-6b-2t3" secondAttribute="width" multiplier="0.5" id="jLK-hn-fiu"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -27,4 +41,7 @@
             <point key="canvasLocation" x="53" y="375"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="pillarlogo" width="420" height="84"/>
+    </resources>
 </document>

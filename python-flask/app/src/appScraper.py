@@ -16,7 +16,9 @@ def getMedicationInfo(medication):
     result = request.read()
     soup = BeautifulSoup(result, 'html.parser')
 
-    if " returned 0 results." in soup:
+    numOfSearchResults = re.search("(?:\d+\.)?\d+", soup.find('span', class_='hmiSearchTerm').parent.get_text()).group()
+
+    if numOfSearchResults == '0':
         return json.dumps({'error':'try again'})
     else:
         searchResults = soup.find_all('h1')
@@ -25,6 +27,9 @@ def getMedicationInfo(medication):
             searchResultList.append(str(i.a.get('href')))
 
         medicationURL = searchResultList[0]
+        # if searchResultList[0]:
+        #     medicationURL = searchResultList[0]
+        # else: 
 
         request1 = urllib2.urlopen(medicationURL)
         result1 = request1.read()

@@ -98,7 +98,7 @@ def findFreq(text):
     if re.search(r'every \d\d hours', text, re.I|re.M) is not None:
         num = int(re.search(r'every \d\d hours', text, re.I|re.M).group()[6:8])
         return round(24/num)
-    return 1
+    return "once a day"
 
 def findMax(text):
     if 'once daily' in text or 'once a day' in text or 'one a day' in text or 'one time a day' in text or '1 a day' in text:
@@ -107,12 +107,12 @@ def findMax(text):
         return 2
     if re.search(r'max \d\d', text, re.I|re.M) is not None:
         num = int(re.search(r'max \d\d', text, re.I|re.M).group()[4:6])
-        return round(num/0.5)
+        return int(round(num/0.5))
     if re.search(r'max \d dose', text, re.I|re.M) is not None or re.search(r'max \d tab', text, re.I|re.M) is not None:
         return int(re.search(r'max \d', text, re.I|re.M).group()[4])
     if re.search(r'max \d', text, re.I|re.M) is not None:
         num = int(re.search(r'max \d', text, re.I|re.M).group()[4])
-        return round(num/0.3)
+        return int(round(num/0.3))
     if re.search(r'max: \d', text, re.I|re.M) is not None:
         return int(re.search(r'max: \d', text, re.I|re.M).group()[5])
     return 1

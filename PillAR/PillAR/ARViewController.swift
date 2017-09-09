@@ -1,4 +1,4 @@
-//
+
 //  ViewController.swift
 //  CoreML in ARKit
 //
@@ -21,7 +21,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         sceneView.delegate = self
         sceneView.showsStatistics = true
         let scene = SCNScene()
@@ -40,6 +40,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
         // Create a session configuration
         let configuration = ARWorldTrackingSessionConfiguration()
         // Enable plane detection
+        
         configuration.planeDetection = .horizontal
         
         // Run the view's session
@@ -72,10 +73,18 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
     }
     
     // MARK: - Interaction
+    func convertCItoUIImage(cmage:CIImage) -> UIImage
+    {
+        let context:CIContext = CIContext.init(options: nil)
+        let cgImage:CGImage = context.createCGImage(cmage, from: cmage.extent)!
+        let image:UIImage = UIImage.init(cgImage: cgImage)
+        return image
+    }
     
     @objc func handleTap(gestureRecognize: UITapGestureRecognizer) {
-        // HIT TEST : REAL WORLD
-        // Get Screen Centre
+        
+        print("Screen Hit")
+        
         let screenCentre : CGPoint = CGPoint(x: self.sceneView.bounds.midX, y: self.sceneView.bounds.midY)
         
         let arHitTestResults : [ARHitTestResult] = sceneView.hitTest(screenCentre, types: [.featurePoint]) // Alternatively, we could use '.existingPlaneUsingExtent' for more grounded hit-test-points.
@@ -86,25 +95,30 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
             let worldCoord : SCNVector3 = SCNVector3Make(transform.columns.3.x, transform.columns.3.y, transform.columns.3.z)
             
             
-            let textNode : SCNNode = createNewBubbleParentNode(latestPrediction)
-            sceneView.scene.rootNode.addChildNode(textNode)
-            textNode.position = worldCoord
-            let node = SCNNode()
-            let plaque = SCNBox(width: 0.1, height: 0.14, length: 0.01, chamferRadius: 0.005)
-            plaque.firstMaterial?.diffuse.contents = UIColor(white: 1.0, alpha: 0.6)
-            node.geometry = plaque
-            node.position.y += 0.1
-            let infoNode = SCNNode()
-            let infoGeometry = SCNPlane(width: 0.09, height: 0.13)
-            infoGeometry.firstMaterial?.diffuse.contents = #imageLiteral(resourceName: "test")
-            infoNode.geometry = infoGeometry
-            infoNode.position.y += 0.1
-            infoNode.position.z += 0.0052
-            textNode.addChildNode(node)
-            textNode.addChildNode(infoNode)
-            
-            
-            
+            let pixbuff : CVPixelBuffer? = (sceneView.session.currentFrame?.capturedImage)
+            if pixbuff == nil { return }
+            let ciImage = CIImage(cvPixelBuffer: pixbuff!)
+            let image = convertCItoUIImage(cmage: ciImage)
+            GoogleAPIManager.shared().identifyDrug(image: image, completionHandler: { (result) in
+                if let result = result.first{
+                    let textNode : SCNNode = self.createNewBubbleParentNode(result.0)
+                    self.sceneView.scene.rootNode.addChildNode(textNode)
+                    textNode.position = worldCoord
+                    let node = SCNNode()
+                    let plaque = SCNBox(width: 0.1, height: 0.14, length: 0.01, chamferRadius: 0.005)
+                    plaque.firstMaterial?.diffuse.contents = UIColor(white: 1.0, alpha: 0.6)
+                    node.geometry = plaque
+                    node.position.y += 0.1
+                    let infoNode = SCNNode()
+                    let infoGeometry = SCNPlane(width: 0.09, height: 0.13)
+                    infoGeometry.firstMaterial?.diffuse.contents = #imageLiteral(resourceName: "test")
+                    infoNode.geometry = infoGeometry
+                    infoNode.position.y += 0.1
+                    infoNode.position.z += 0.0052
+                    textNode.addChildNode(node)
+                    textNode.addChildNode(infoNode)
+                }
+            })
         }
     }
     

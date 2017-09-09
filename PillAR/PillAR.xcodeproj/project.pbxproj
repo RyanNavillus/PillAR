@@ -14,10 +14,12 @@
 		3B17CD211F639DB90011CE7E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B17CD201F639DB90011CE7E /* Assets.xcassets */; };
 		3B17CD241F639DB90011CE7E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B17CD221F639DB90011CE7E /* LaunchScreen.storyboard */; };
 		3B17CD2C1F639FDA0011CE7E /* GoogleAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B17CD2B1F639FDA0011CE7E /* GoogleAPIManager.swift */; };
+		891AB7909DF442F2E8BD903B /* Pods_PillAR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32A29F1294CFAA34F2368B18 /* Pods_PillAR.framework */; };
 		BB260F6D1F63C5AC006743ED /* ARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB260F6C1F63C5AC006743ED /* ARViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		32A29F1294CFAA34F2368B18 /* Pods_PillAR.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PillAR.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B17CD131F639DB90011CE7E /* PillAR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PillAR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B17CD161F639DB90011CE7E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3B17CD181F639DB90011CE7E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -27,7 +29,9 @@
 		3B17CD231F639DB90011CE7E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3B17CD251F639DB90011CE7E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3B17CD2B1F639FDA0011CE7E /* GoogleAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleAPIManager.swift; sourceTree = "<group>"; };
+		B7AA8AB37CD8AA8D850B546F /* Pods-PillAR.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PillAR.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PillAR/Pods-PillAR.debug.xcconfig"; sourceTree = "<group>"; };
 		BB260F6C1F63C5AC006743ED /* ARViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewController.swift; sourceTree = "<group>"; };
+		FA263594C2CDDDEB8526C0FD /* Pods-PillAR.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PillAR.release.xcconfig"; path = "Pods/Target Support Files/Pods-PillAR/Pods-PillAR.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,17 +39,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				891AB7909DF442F2E8BD903B /* Pods_PillAR.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		059EBF8A19681FA368341EFB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				32A29F1294CFAA34F2368B18 /* Pods_PillAR.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		3B17CD0A1F639DB80011CE7E = {
 			isa = PBXGroup;
 			children = (
 				3B17CD151F639DB90011CE7E /* PillAR */,
 				3B17CD141F639DB90011CE7E /* Products */,
+				872BE71C1DF49C71F1E053EF /* Pods */,
+				059EBF8A19681FA368341EFB /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -73,6 +88,15 @@
 			path = PillAR;
 			sourceTree = "<group>";
 		};
+		872BE71C1DF49C71F1E053EF /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				B7AA8AB37CD8AA8D850B546F /* Pods-PillAR.debug.xcconfig */,
+				FA263594C2CDDDEB8526C0FD /* Pods-PillAR.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -80,9 +104,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3B17CD281F639DB90011CE7E /* Build configuration list for PBXNativeTarget "PillAR" */;
 			buildPhases = (
+				59CF3B9060C2CECB1A017AE1 /* [CP] Check Pods Manifest.lock */,
 				3B17CD0F1F639DB90011CE7E /* Sources */,
 				3B17CD101F639DB90011CE7E /* Frameworks */,
 				3B17CD111F639DB90011CE7E /* Resources */,
+				4BEFB20BEE405ADACA982EC4 /* [CP] Embed Pods Frameworks */,
+				5EC7B193C28259C33BCC2A27 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -104,7 +131,7 @@
 				TargetAttributes = {
 					3B17CD121F639DB90011CE7E = {
 						CreatedOnToolsVersion = 7.0;
-						DevelopmentTeam = G54TLNA64K;
+						DevelopmentTeam = 9XWYL3K4YT;
 					};
 				};
 			};
@@ -138,6 +165,62 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		4BEFB20BEE405ADACA982EC4 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-PillAR/Pods-PillAR-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PillAR/Pods-PillAR-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		59CF3B9060C2CECB1A017AE1 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PillAR-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5EC7B193C28259C33BCC2A27 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PillAR/Pods-PillAR-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		3B17CD0F1F639DB90011CE7E /* Sources */ = {
@@ -259,13 +342,14 @@
 		};
 		3B17CD291F639DB90011CE7E /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B7AA8AB37CD8AA8D850B546F /* Pods-PillAR.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = G54TLNA64K;
+				DEVELOPMENT_TEAM = 9XWYL3K4YT;
 				INFOPLIST_FILE = PillAR/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ryansullivan.PillAR;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Isometric.PillAR;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -273,13 +357,14 @@
 		};
 		3B17CD2A1F639DB90011CE7E /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FA263594C2CDDDEB8526C0FD /* Pods-PillAR.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = G54TLNA64K;
+				DEVELOPMENT_TEAM = 9XWYL3K4YT;
 				INFOPLIST_FILE = PillAR/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ryansullivan.PillAR;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Isometric.PillAR;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};

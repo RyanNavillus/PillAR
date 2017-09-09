@@ -1,0 +1,6 @@
+framework module Pods_PillAR {
+  umbrella header "Pods-PillAR-umbrella.h"
+
+  export *
+  module * { export * }
+}

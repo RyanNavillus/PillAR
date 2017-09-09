@@ -24,6 +24,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="-64" y="29"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="IBD-7n-eXG">
@@ -40,12 +41,21 @@
                             <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VPp-vz-MtS">
                                 <rect key="frame" x="0.0" y="0.0" width="834" height="1112"/>
                             </arscnView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="plus" translatesAutoresizingMaskIntoConstraints="NO" id="Hbn-Hy-JNi">
+                                <rect key="frame" x="397" y="536" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="YKu-n0-ZqC"/>
+                                    <constraint firstAttribute="width" constant="40" id="lLm-sv-J70"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="VPp-vz-MtS" firstAttribute="height" secondItem="abq-ig-XAA" secondAttribute="height" id="CU8-0K-Mc5"/>
                             <constraint firstItem="VPp-vz-MtS" firstAttribute="centerY" secondItem="abq-ig-XAA" secondAttribute="centerY" id="GAC-4I-Etf"/>
+                            <constraint firstItem="Hbn-Hy-JNi" firstAttribute="centerY" secondItem="VPp-vz-MtS" secondAttribute="centerY" id="X5e-k7-S1W"/>
                             <constraint firstItem="VPp-vz-MtS" firstAttribute="width" secondItem="abq-ig-XAA" secondAttribute="width" id="XHJ-L3-6Ht"/>
+                            <constraint firstItem="Hbn-Hy-JNi" firstAttribute="centerX" secondItem="VPp-vz-MtS" secondAttribute="centerX" id="eZz-mm-1u6"/>
                             <constraint firstItem="VPp-vz-MtS" firstAttribute="centerX" secondItem="abq-ig-XAA" secondAttribute="centerX" id="mPM-gm-1qg"/>
                         </constraints>
                     </view>
@@ -58,4 +68,7 @@
             <point key="canvasLocation" x="677" y="29"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="plus" width="100" height="100"/>
+    </resources>
 </document>

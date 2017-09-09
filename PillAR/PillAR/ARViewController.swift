@@ -9,7 +9,7 @@
 import UIKit
 import SceneKit
 import ARKit
-
+import SceneKit.ModelIO
 import Vision
 
 class ARViewController: UIViewController, ARSCNViewDelegate {
@@ -17,7 +17,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
     // SCENE
     @IBOutlet var sceneView: ARSCNView!
     let bubbleDepth : Float = 0.01 // the 'depth' of 3D text
-    var latestPrediction : String = "Potatoes" // a variable containing the latest CoreML prediction
+    var latestPrediction : String = "" // a variable containing the latest CoreML prediction
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,7 +31,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
         // Tap Gesture Recognizer
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(gestureRecognize:)))
         view.addGestureRecognizer(tapGesture)
-
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -85,10 +85,26 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
             let transform : matrix_float4x4 = closestResult.worldTransform
             let worldCoord : SCNVector3 = SCNVector3Make(transform.columns.3.x, transform.columns.3.y, transform.columns.3.z)
             
-            // Create 3D Text
-            let node : SCNNode = createNewBubbleParentNode(latestPrediction)
-            sceneView.scene.rootNode.addChildNode(node)
-            node.position = worldCoord
+            
+            let textNode : SCNNode = createNewBubbleParentNode(latestPrediction)
+            sceneView.scene.rootNode.addChildNode(textNode)
+            textNode.position = worldCoord
+            let node = SCNNode()
+            let plaque = SCNBox(width: 0.1, height: 0.14, length: 0.01, chamferRadius: 0.005)
+            plaque.firstMaterial?.diffuse.contents = UIColor(white: 1.0, alpha: 0.6)
+            node.geometry = plaque
+            node.position.y += 0.1
+            let infoNode = SCNNode()
+            let infoGeometry = SCNPlane(width: 0.09, height: 0.13)
+            infoGeometry.firstMaterial?.diffuse.contents = #imageLiteral(resourceName: "test")
+            infoNode.geometry = infoGeometry
+            infoNode.position.y += 0.1
+            infoNode.position.z += 0.0052
+            textNode.addChildNode(node)
+            textNode.addChildNode(infoNode)
+            
+            
+            
         }
     }
     
@@ -133,12 +149,12 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
         return bubbleNodeParent
     }
     
-
     
-
+    
+    
 }
-    
-   
+
+
 
 extension UIFont {
     // Based on: https://stackoverflow.com/questions/4713236/how-do-i-set-bold-and-italic-on-uilabel-of-iphone-ipad

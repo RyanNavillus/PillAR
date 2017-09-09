@@ -39,7 +39,9 @@ def getMedicationInfo(medication):
             p = paragraphs[pIndex]
             #print (h2 + " " + p.get_text())
             #medicationInfo.append(h2 + " " + p.get_text())
-            medicationInfo[h2] = p.get_text()
+            medicationInfo[h2.strip(':')] = p.get_text()
+            if 'once daily' in p.get_text():
+                medicationInfo[h2.strip(':') + " dosage"] = "once daily"
             #newHTML = newHTML + str(i) + str(p)
         pIndex += 1
 

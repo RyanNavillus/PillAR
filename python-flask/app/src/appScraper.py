@@ -74,14 +74,30 @@ def getMedicationInfo(medication):
 
 # Returns an integer number of pills needed daily given json input
 def findFreq(text):
-    if 'once daily' in text or 'once a day' in text or 'one a day' in text or 'one time a day' in text or '1 a day' in text:
-        return "once a day"
+    freqStr = ""
+    #if 'once daily' in text or 'once a day' in text or 'one a day' in text or 'one time a day' in text or '1 a day' in text:
+    #    freqStr = "once a day"
     if 'twice daily' in text or 'twice a day' in text or 'two a day' in text or 'two times a day' in text or '2 a day' in text:
-        return "twice a day"
-    if re.search(r'every \d hours for \d doses', text, re.I|re.M) is not None:
-        return int(re.search(r'every \d hours for \d doses', text, re.I|re.M).group()[-7])
-    if re.search(r'every \d hours for \d\d doses', text, re.I|re.M) is not None:
-        return int(re.search(r'every \d hours for \d\d doses', text, re.I|re.M).group()[-8:-6])
+        freqStr = "twice a day"
+    if re.search(r'every \d hours for \d+ doses', text, re.I|re.M) is not None:
+        #return int(re.search(r'every \d hours for \d doses', text, re.I|re.M).group()[-7])
+        hours = int(re.search(r'every \d+ hours for \d+ doses', text, re.I|re.M).group()[6])
+        doses = int(re.search(r'every \d+ hours for \d+ doses', text, re.I|re.M).group()[-7])
+        freqStr += str(doses)
+        if doses == 1:
+            freqStr += " dose every "
+        else:
+            freqStr += " doses every "
+
+        freqStr += str(hours)
+        if hours == 1:
+            freqStr += " hour"
+        else:
+            freqStr += " hours"
+
+    #if re.search(r'every \d hours for \d\d doses', text, re.I|re.M) is not None:
+        #return int(re.search(r'every \d hours for \d\d doses', text, re.I|re.M).group()[-8:-6])
+        #return re.search(r'every \d hours for \d\d doses', text, re.I|re.M).group()
     # if re.search(r'max \d\d', text, re.I|re.M) is not None:
     #     num = int(re.search(r'max \d\d', text, re.I|re.M).group()[4:6])
     #     return round(num/0.5)
@@ -93,12 +109,20 @@ def findFreq(text):
     # if re.search(r'max: \d', text, re.I|re.M) is not None:
     #     return int(re.search(r'max: \d', text, re.I|re.M).group()[5])
     if re.search(r'every \d hours', text, re.I|re.M) is not None:
-        num = int(re.search(r'every \d hours', text, re.I|re.M).group()[6])
-        return round(24/num)
-    if re.search(r'every \d\d hours', text, re.I|re.M) is not None:
-        num = int(re.search(r'every \d\d hours', text, re.I|re.M).group()[6:8])
-        return round(24/num)
-    return "once a day"
+        #num = int(re.search(r'every \d hours', text, re.I|re.M).group()[6])
+        #return round(24/num)
+        hours = int(re.search(r'every \d hours', text, re.I|re.M).group()[6])
+        freqStr += "1 dose every "
+        freqStr += str(hours)
+        if hours == 1:
+            freqStr += " hour"
+        else:
+            freqStr += " hours"
+    #if re.search(r'every \d\d hours', text, re.I|re.M) is not None:
+    #    num = int(re.search(r'every \d\d hours', text, re.I|re.M).group()[6:8])
+    #    return round(24/num)
+    freqStr = "once a day"
+    return freqStr
 
 def findMax(text):
     if 'once daily' in text or 'once a day' in text or 'one a day' in text or 'one time a day' in text or '1 a day' in text:

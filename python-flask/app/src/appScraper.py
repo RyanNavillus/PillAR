@@ -52,9 +52,9 @@ def getMedicationInfo(medication):
             # elif 'every ' and ' hours' in pText:
             #     medicationInfo[h2.strip(':')]
             #newHTML = newHTML + str(i) + str(p)
-        if 'How Supplied' in h2:
-            medicationInfo['mg per pill'] = paragraphs[pIndex].get_text()
-            medicationInfo['mg per pill regex'] = re.search(r'(?:\d*\.)?\d+mg', paragraphs[pIndex].get_text()).group()
+        # if 'How Supplied' in h2:
+        #     medicationInfo['mg per pill'] = paragraphs[pIndex].get_text()
+        #     medicationInfo['mg per pill regex'] = re.search(r'(?:\d*\.)?\d+mg', paragraphs[pIndex].get_text()).group()
         pIndex += 1
 
     #return newHTML

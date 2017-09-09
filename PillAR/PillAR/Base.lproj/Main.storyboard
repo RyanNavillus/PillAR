@@ -368,7 +368,7 @@
     </scenes>
     <resources>
         <image name="Oval 3" width="29" height="29"/>
-        <image name="pillarlogo" width="420" height="84"/>
+        <image name="pillarlogo" width="3330" height="666"/>
         <image name="plus" width="100" height="100"/>
         <image name="rightArrow" width="100" height="100"/>
         <image name="upArrow" width="100" height="100"/>

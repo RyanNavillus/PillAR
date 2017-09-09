@@ -86,10 +86,8 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
     {
         let context:CIContext = CIContext.init(options: nil)
         
-        
         let cgImage:CGImage = context.createCGImage(cmage, from: cmage.extent)!
-        let image:UIImage = UIImage(cgImage: cgImage.cropping(to: CGRect(x: 200, y: 100, width: cgImage.width - 400, height: cgImage.height - 200))!, scale: 1.0, orientation: UIImageOrientation.right)
-        return image
+        return UIImage(cgImage: cgImage)
     }
     
     @objc func handleTap(gestureRecognize: UITapGestureRecognizer) {
@@ -110,9 +108,8 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
             if pixbuff == nil { return }
             let ciImage = CIImage(cvPixelBuffer: pixbuff!)
             var image = convertCItoUIImage(cmage: ciImage)
-            image = cropImageToSquare(image: image)!
-//            image = image.crop(to: CGSize(width: image.size.height / 2, height: image.size.width / 2))
-//            image = cropImage(image: image, toRect: CGRect(x: image.size.width / 4.0, y: image.size.height / 4.0, width: image.size.width / 2.0, height: image.size.height / 2.0))
+            image = image.crop(to: CGSize(width: image.size.width, height: image.size.width))
+            image = image.zoom(to: 4.0) ?? image
             PHPhotoLibrary.shared().performChanges({
                 PHAssetChangeRequest.creationRequestForAsset(from: image)
             }, completionHandler: { success, error in
@@ -128,9 +125,16 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
                 }
             })
 
+            // Testing
+//            let imageView = UIImageView(image: image)
+//            imageView.frame.size = CGSize(width: view.frame.width, height: view.frame.width)
+//            imageView.center = view.center
+//            imageView.contentMode = .scaleAspectFit
+//            view.addSubview(imageView)
+            
             GoogleAPIManager.shared().identifyDrug(image: image, completionHandler: { (result) in
-                if let result = result.first{
-                    let textNode : SCNNode = self.createNewBubbleParentNode(result.0)
+                if let result = result {
+                    let textNode : SCNNode = self.createNewBubbleParentNode(result)
                     self.sceneView.scene.rootNode.addChildNode(textNode)
                     textNode.position = worldCoord
                     let node = SCNNode()
@@ -192,35 +196,6 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
         return bubbleNodeParent
     }
     
-    
-    func cropImageToSquare(image: UIImage) -> UIImage? {
-        var imageHeight = image.size.height
-        var imageWidth = image.size.width
-        
-        if imageHeight > imageWidth {
-            imageHeight = imageWidth
-        }
-        else {
-            imageWidth = imageHeight
-        }
-        
-        let size = CGSize(width: imageWidth, height: imageHeight)
-        
-        let refWidth : CGFloat = CGFloat(image.cgImage!.width)
-        let refHeight : CGFloat = CGFloat(image.cgImage!.height)
-        
-        let x = (refWidth - size.width) / 2
-        let y = (refHeight - size.height) / 2
-        
-        let cropRect = CGRect(x: x, y: y, width: size.height, height: size.width)
-        if let imageRef = image.cgImage!.cropping(to: cropRect) {
-            return UIImage(cgImage: imageRef, scale: 0, orientation: image.imageOrientation)
-        }
-        
-        return nil
-    }
-
-    
 }
 
 
@@ -275,7 +250,7 @@ extension UIImage {
         let imageRef: CGImage = contextImage.cgImage!.cropping(to: rect)!
         
         // Create a new image based on the imageRef and rotate back to the original orientation
-        let cropped: UIImage = UIImage(cgImage: imageRef, scale: self.scale, orientation: self.imageOrientation)
+        let cropped: UIImage = UIImage(cgImage: imageRef, scale: self.scale, orientation: .right)
         
         UIGraphicsBeginImageContextWithOptions(to, true, self.scale)
         cropped.draw(in: CGRect(x: 0, y: 0, width: to.width, height: to.height))
@@ -283,6 +258,31 @@ extension UIImage {
         UIGraphicsEndImageContext()
         
         return resized!
+    }
+    
+    func zoom(to scale: CGFloat) -> UIImage? {
+        var sideLength: CGFloat = 0;
+        let imageHeight = self.size.height
+        let imageWidth = self.size.width
+        
+        if imageHeight > imageWidth {
+            sideLength = imageWidth
+        }
+        else {
+            sideLength = imageHeight
+        }
+        
+        let size = CGSize(width: sideLength, height: sideLength)
+        
+        let x = (size.width / 2) - (size.width / (2 * scale))
+        let y = (size.height / 2) - (size.width / (2 * scale))
+        
+        let cropRect = CGRect(x: x, y: y, width: size.width / scale, height: size.height / scale)
+        if let imageRef = cgImage!.cropping(to: cropRect) {
+            return UIImage(cgImage: imageRef, scale: 1.0, orientation: imageOrientation)
+        }
+        
+        return nil
     }
 }
 

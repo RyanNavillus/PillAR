@@ -28,7 +28,7 @@ class GoogleAPIManager {
         return sharedInstance
     }
     
-    func identifyDrug(image: UIImage, completionHandler: @escaping (Array<(String, CGPoint, CGSize)>) -> ()) {
+    func identifyDrug(image: UIImage, completionHandler: @escaping ((String?) -> ())) {
         // Base64 encode the image and create the request
         let binaryImagePacket = base64EncodeImage(image)
         createRequest(with: binaryImagePacket, completionHandler: completionHandler)
@@ -56,7 +56,7 @@ class GoogleAPIManager {
         return (imagedata.base64EncodedString(options: .endLineWithCarriageReturn), image.size)
     }
     
-    func createRequest(with imageBase64: (String, CGSize), completionHandler: @escaping (Array<(String, CGPoint, CGSize)>) -> ()) {
+    func createRequest(with imageBase64: (String, CGSize), completionHandler: @escaping ((String?) -> ())) {
         // Create our request URL
         
         var request = URLRequest(url: googleURL)
@@ -73,8 +73,13 @@ class GoogleAPIManager {
                 "features": [
                     [
                         "type": "LOGO_DETECTION",
-                        "maxResults": 10
+                        "maxResults": 3
+                    ],
+                    [
+                        "type": "WEB_DETECTION",
+                        "maxResults": 3
                     ]
+
                 ]
             ]
         ]
@@ -104,40 +109,50 @@ class GoogleAPIManager {
                         print("Error code \(errorObj["code"]): \(errorObj["message"])")
                     }
                     print(json)
-                    var responses = Array<(String, CGPoint, CGSize)>()
+                    var responses: [String] = []
                     if let logoResults = json["responses"][0]["logoAnnotations"].array, logoResults.count > 0 {
                         for item in logoResults{
-                            if let description = item["description"].string, let verticiesArr = item["boundingPoly"]["vertices"].array{
-                                var total_x = 0.0
-                                var total_y = 0.0
-                                var num = 0.0
-                                for vertex in verticiesArr{
-                                    if let xVal = vertex["x"].double, let yVal = vertex["y"].double{
-                                        total_x += xVal
-                                        total_y += yVal
-                                        num += 1
-                                    }
-                                }
-                                responses.append((description, CGPoint(x: total_x / num, y: total_y / num), imageBase64.1))
+                            if let description = item["description"].string {
+//                            let verticiesArr = item["boundingPoly"]["vertices"].array{
+//                                var total_x = 0.0
+//                                var total_y = 0.0
+//                                var num = 0.0
+//                                for vertex in verticiesArr{
+//                                    if let xVal = vertex["x"].double, let yVal = vertex["y"].double{
+//                                        total_x += xVal
+//                                        total_y += yVal
+//                                        num += 1
+//                                    }
+//                                }
+                                responses.append(description)
                             }
                         }
-                    }
-                    if responses.count > 1{
-                        var index_closest_to_center = 0
-                        var minDistance = Double.infinity
-                        for i in 0..<responses.count{
-                            let item = responses[i]
-                            if self.distanceFromPointToCenterSize(p1: item.1, s2: item.2) < minDistance{
-                                minDistance = self.distanceFromPointToCenterSize(p1: item.1, s2: item.2)
-                                index_closest_to_center = i
-                            }
-                        }
-                        let closest = responses[index_closest_to_center]
-                        responses = Array<(String, CGPoint, CGSize)>()
-                        responses.append(closest)
                     }
                     
-                    completionHandler(responses)
+                    if let webEntities = json["responses"][0]["webDetection"]["webEntities"].array, webEntities.count > 0 {
+                        for item in webEntities {
+                            if let description = item["description"].string {
+                                responses.append(description)
+                            }
+                        }
+                    }
+                    
+//                    if responses.count > 1 {
+//                        var index_closest_to_center = 0
+//                        var minDistance = Double.infinity
+//                        for i in 0..<responses.count{
+//                            let item = responses[i]
+//                            if self.distanceFromPointToCenterSize(p1: item.1, s2: item.2) < minDistance{
+//                                minDistance = self.distanceFromPointToCenterSize(p1: item.1, s2: item.2)
+//                                index_closest_to_center = i
+//                            }
+//                        }
+//                        let closest = responses[index_closest_to_center]
+//                        responses = Array<(String, CGPoint, CGSize)>()
+//                        responses.append(closest)
+//                    }
+        
+                    completionHandler(responses.first)
                 })
             }
             

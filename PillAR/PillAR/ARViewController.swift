@@ -99,9 +99,15 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
             if pixbuff == nil { return }
             let ciImage = CIImage(cvPixelBuffer: pixbuff!)
             let image = convertCItoUIImage(cmage: ciImage)
+            
+            // Testing
+            let resizeImage = GoogleAPIManager.shared().resizeImage(CGSize(width: 800, height: 800) , image: image)
+            let imageView = UIImageView(image: UIImage.init(data: resizeImage))
+            imageView.frame = view.frame
+            view.addSubview(imageView)
             GoogleAPIManager.shared().identifyDrug(image: image, completionHandler: { (result) in
-                if let result = result.first{
-                    let textNode : SCNNode = self.createNewBubbleParentNode(result.0)
+                if let result = result {
+                    let textNode : SCNNode = self.createNewBubbleParentNode(result)
                     self.sceneView.scene.rootNode.addChildNode(textNode)
                     textNode.position = worldCoord
                     let node = SCNNode()

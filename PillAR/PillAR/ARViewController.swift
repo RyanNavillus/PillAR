@@ -11,6 +11,7 @@ import SceneKit
 import ARKit
 import SceneKit.ModelIO
 import Vision
+import Photos
 
 class ARViewController: UIViewController, ARSCNViewDelegate {
     
@@ -28,7 +29,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
         sceneView.scene = scene
         sceneView.autoenablesDefaultLighting = true
         
-        // Tap Gesture Recognizer
+        
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(gestureRecognize:)))
         view.addGestureRecognizer(tapGesture)
         
@@ -54,6 +55,14 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
         sceneView.session.pause()
     }
     
+    
+    func cropImage(image:UIImage, toRect rect:CGRect) -> UIImage{
+        let imageRef:CGImage = image.cgImage!.cropping(to: rect)!
+        let croppedImage:UIImage = UIImage(cgImage:imageRef)
+        return croppedImage
+    }
+    
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Release any cached data, images, etc that aren't in use.
@@ -76,8 +85,10 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
     func convertCItoUIImage(cmage:CIImage) -> UIImage
     {
         let context:CIContext = CIContext.init(options: nil)
+        
+        
         let cgImage:CGImage = context.createCGImage(cmage, from: cmage.extent)!
-        let image:UIImage = UIImage.init(cgImage: cgImage)
+        let image:UIImage = UIImage(cgImage: cgImage.cropping(to: CGRect(x: 200, y: 100, width: cgImage.width - 400, height: cgImage.height - 200))!, scale: 1.0, orientation: UIImageOrientation.right)
         return image
     }
     
@@ -98,11 +109,29 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
             let pixbuff : CVPixelBuffer? = (sceneView.session.currentFrame?.capturedImage)
             if pixbuff == nil { return }
             let ciImage = CIImage(cvPixelBuffer: pixbuff!)
-            let image = convertCItoUIImage(cmage: ciImage)
+            var image = convertCItoUIImage(cmage: ciImage)
+            image = cropImageToSquare(image: image)!
+//            image = image.crop(to: CGSize(width: image.size.height / 2, height: image.size.width / 2))
+//            image = cropImage(image: image, toRect: CGRect(x: image.size.width / 4.0, y: image.size.height / 4.0, width: image.size.width / 2.0, height: image.size.height / 2.0))
+            PHPhotoLibrary.shared().performChanges({
+                PHAssetChangeRequest.creationRequestForAsset(from: image)
+            }, completionHandler: { success, error in
+                if success {
+                    print("Saved successfully")
+                    // Saved successfully!
+                }
+                else if let error = error {
+                    // Save photo failed with error
+                }
+                else {
+                    // Save photo failed with no error
+                }
+            })
+
             GoogleAPIManager.shared().identifyDrug(image: image, completionHandler: { (result) in
                 if let result = result.first{
                     let textNode : SCNNode = self.createNewBubbleParentNode(result.0)
-                    self.sceneView.scene.rootNode.addChildNode(textNode)
+//                    self.sceneView.scene.rootNode.addChildNode(textNode)
                     textNode.position = worldCoord
                     let node = SCNNode()
                     let plaque = SCNBox(width: 0.1, height: 0.14, length: 0.01, chamferRadius: 0.005)
@@ -115,8 +144,8 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
                     infoNode.geometry = infoGeometry
                     infoNode.position.y += 0.1
                     infoNode.position.z += 0.0052
-                    textNode.addChildNode(node)
-                    textNode.addChildNode(infoNode)
+//                    textNode.addChildNode(node)
+//                    textNode.addChildNode(infoNode)
                 }
             })
         }
@@ -164,7 +193,33 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
     }
     
     
-    
+    func cropImageToSquare(image: UIImage) -> UIImage? {
+        var imageHeight = image.size.height
+        var imageWidth = image.size.width
+        
+        if imageHeight > imageWidth {
+            imageHeight = imageWidth
+        }
+        else {
+            imageWidth = imageHeight
+        }
+        
+        let size = CGSize(width: imageWidth, height: imageHeight)
+        
+        let refWidth : CGFloat = CGFloat(image.cgImage!.width)
+        let refHeight : CGFloat = CGFloat(image.cgImage!.height)
+        
+        let x = (refWidth - size.width) / 2
+        let y = (refHeight - size.height) / 2
+        
+        let cropRect = CGRect(x: x, y: y, width: size.height, height: size.width)
+        if let imageRef = image.cgImage!.cropping(to: cropRect) {
+            return UIImage(cgImage: imageRef, scale: 0, orientation: image.imageOrientation)
+        }
+        
+        return nil
+    }
+
     
 }
 
@@ -175,6 +230,59 @@ extension UIFont {
     func withTraits(traits:UIFontDescriptorSymbolicTraits...) -> UIFont {
         let descriptor = self.fontDescriptor.withSymbolicTraits(UIFontDescriptorSymbolicTraits(traits))
         return UIFont(descriptor: descriptor!, size: 0)
+    }
+}
+
+extension UIImage {
+    
+    func crop(to:CGSize) -> UIImage {
+        guard let cgimage = self.cgImage else { return self }
+        
+        let contextImage: UIImage = UIImage(cgImage: cgimage)
+        
+        let contextSize: CGSize = contextImage.size
+        
+        //Set to square
+        var posX: CGFloat = 0.0
+        var posY: CGFloat = 0.0
+        let cropAspect: CGFloat = to.width / to.height
+        
+        var cropWidth: CGFloat = to.width
+        var cropHeight: CGFloat = to.height
+        
+        if to.width > to.height { //Landscape
+            cropWidth = contextSize.width
+            cropHeight = contextSize.width / cropAspect
+            posY = (contextSize.height - cropHeight) / 2
+        } else if to.width < to.height { //Portrait
+            cropHeight = contextSize.height
+            cropWidth = contextSize.height * cropAspect
+            posX = (contextSize.width - cropWidth) / 2
+        } else { //Square
+            if contextSize.width >= contextSize.height { //Square on landscape (or square)
+                cropHeight = contextSize.height
+                cropWidth = contextSize.height * cropAspect
+                posX = (contextSize.width - cropWidth) / 2
+            }else{ //Square on portrait
+                cropWidth = contextSize.width
+                cropHeight = contextSize.width / cropAspect
+                posY = (contextSize.height - cropHeight) / 2
+            }
+        }
+        
+        let rect: CGRect = CGRect(x: posX, y: posY, width: cropWidth, height: cropHeight)
+        // Create bitmap image from context using the rect
+        let imageRef: CGImage = contextImage.cgImage!.cropping(to: rect)!
+        
+        // Create a new image based on the imageRef and rotate back to the original orientation
+        let cropped: UIImage = UIImage(cgImage: imageRef, scale: self.scale, orientation: self.imageOrientation)
+        
+        UIGraphicsBeginImageContextWithOptions(to, true, self.scale)
+        cropped.draw(in: CGRect(x: 0, y: 0, width: to.width, height: to.height))
+        let resized = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return resized!
     }
 }
 

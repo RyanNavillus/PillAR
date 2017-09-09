@@ -31,15 +31,17 @@ def getMedicationInfo(medication):
     paragraphs = sections.find_all('p')
 
     pIndex = 0
-    medicationInfo = []
+    medicationInfo = {}
     newHTML = ""
     for i in headings:
         h2 = i.get_text()
         if h2 in dosageHeadings:
             p = paragraphs[pIndex]
             #print (h2 + " " + p.get_text())
-            medicationInfo.append(h2 + " " + p.get_text())
-            newHTML = newHTML + str(i) + str(p)
+            #medicationInfo.append(h2 + " " + p.get_text())
+            medicationInfo['h2'] = p.get_text()
+            #newHTML = newHTML + str(i) + str(p)
         pIndex += 1
 
-    return newHTML
+    #return newHTML
+    return json.dumps(medicationInfo)

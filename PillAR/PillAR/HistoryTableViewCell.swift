@@ -9,7 +9,15 @@
 import UIKit
 
 class HistoryTableViewCell: UITableViewCell {
-
+    
+    @IBOutlet weak var drugNameLabel: UILabel!
+    @IBOutlet weak var detailTimeTakenLabel: UILabel!
+    @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var actionLabel: UILabel!
+    @IBOutlet weak var timestampLabel: UILabel!
+    @IBOutlet weak var containerView: UIView!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

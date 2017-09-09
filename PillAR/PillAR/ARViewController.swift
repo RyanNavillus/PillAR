@@ -131,7 +131,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
             GoogleAPIManager.shared().identifyDrug(image: image, completionHandler: { (result) in
                 if let result = result.first{
                     let textNode : SCNNode = self.createNewBubbleParentNode(result.0)
-//                    self.sceneView.scene.rootNode.addChildNode(textNode)
+                    self.sceneView.scene.rootNode.addChildNode(textNode)
                     textNode.position = worldCoord
                     let node = SCNNode()
                     let plaque = SCNBox(width: 0.1, height: 0.14, length: 0.01, chamferRadius: 0.005)
@@ -144,8 +144,8 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
                     infoNode.geometry = infoGeometry
                     infoNode.position.y += 0.1
                     infoNode.position.z += 0.0052
-//                    textNode.addChildNode(node)
-//                    textNode.addChildNode(infoNode)
+                    textNode.addChildNode(node)
+                    textNode.addChildNode(infoNode)
                 }
             })
         }

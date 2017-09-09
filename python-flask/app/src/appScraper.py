@@ -2,6 +2,7 @@ from src import app
 from flask import render_template
 import urllib2, json
 from bs4 import BeautifulSoup
+import re
 
 dosageHeadings = ["Adult:", "Children:", "Adults and Children:"]
 

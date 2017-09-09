@@ -56,7 +56,8 @@ def getMedicationInfo(medication):
         if 'How Supplied' in h2:
             #medicationInfo['mg per pill'] = paragraphs[pIndex].get_text()
             pillSize = re.search('(?:\d+\.)?\d+mg', i.find_next("p").get_text())
-            medicationInfo['mg per pill'] = pillSize.group(0)
+            if pillSize != '':
+                medicationInfo['mg per pill'] = pillSize.group(0)
         #     medicationInfo['mg per pill regex'] = re.search(r'(?:\d*\.)?\d+mg', paragraphs[pIndex].get_text()).group()
         pIndex += 1
 

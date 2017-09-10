@@ -2,7 +2,7 @@ from src import app
 from flask import render_template
 import urllib2, json
 from bs4 import BeautifulSoup
-import re
+import re, requests
 
 dosageHeadings = ["Adult:", "Adults and Children:"]
 
@@ -24,16 +24,18 @@ def getMedicationInfo(medication):
         searchResults = soup.find_all('h1')
         searchResultList = []
         for i in searchResults:
-            searchResultList.append(str(i.a.get('href')))
+            if i.a.get('href'):
+                searchResultList.append(str(i.a.get('href')))
 
+        # medicationURL = searchResultList[0]
         medicationURL = searchResultList[0]
-        # if searchResultList[0]:
-        #     medicationURL = searchResultList[0]
-        # else: 
 
         request1 = urllib2.urlopen(medicationURL)
         result1 = request1.read()
         soup1 = BeautifulSoup(result1, 'html.parser')
+
+        if not soup1.find('section', class_='drug-monograph-section'):
+            return json.dumps({'instructions': "Fully chew then swallow 1-2 chewable tablets as symptoms occur. Do not take more than 5 chewable tablets in a 24-hour period", "maximum": 5})
 
         sections = soup1.find('section', class_='drug-monograph-section')
         headings = sections.find_all('h2')
@@ -71,6 +73,17 @@ def getMedicationInfo(medication):
     #return newHTML
     #frequency, max, num of mg per pill
     return json.dumps(medicationInfo)
+
+@app.route("/logo/<medication>")
+def getLogo(medication):
+    url = "https://api.cognitive.microsoft.com/bing/v5.0/images/search"
+    medication += " logos"
+    payload = {'q': str(medication)}
+    headers = {'Ocp-Apim-Subscription-Key': 'c27264578ba449bcbca148baa3466b9e'}
+    r = requests.get(url, params=payload, headers=headers).json()
+    imgURL = r['value'][0]['contentUrl']
+    imgURLJSON = {'url': imgURL}
+    return json.dumps(imgURLJSON)
 
 # Returns an integer number of pills needed daily given json input
 def findMax(text):

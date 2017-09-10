@@ -21,7 +21,6 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
     let bubbleDepth : Float = 0.01 // the 'depth' of 3D text
     var latestPrediction : String = "" // a variable containing the latest CoreML prediction
     
-    
     var historyYOffset:CGFloat = 165
     
     var tapGesture = UITapGestureRecognizer()
@@ -131,8 +130,8 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
         if let closestResult = arHitTestResults.first {
             // Get Coordinates of HitTest
             let transform : matrix_float4x4 = closestResult.worldTransform
-            let worldCoord : SCNVector3 = SCNVector3Make(transform.columns.3.x, transform.columns.3.y, transform.columns.3.z)
-            
+            //sceneView.session.add(anchor: ARAnchor(transform: transform))
+            let worldCoord = SCNVector3Make(transform.columns.3.x, transform.columns.3.y, transform.columns.3.z)
             
             let pixbuff : CVPixelBuffer? = (sceneView.session.currentFrame?.capturedImage)
             if pixbuff == nil { return }
@@ -166,18 +165,17 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
                 self.fetchingResults = false
                 self.activityIndicator.stopAnimating()
                 if let result = result {
-                    
                     let billboardConstraint = SCNBillboardConstraint()
                     billboardConstraint.freeAxes = SCNBillboardAxis.Y
                     
-                    let textNode : SCNNode = SCNNode()
+                    let textNode = SCNNode()
                     self.sceneView.scene.rootNode.addChildNode(textNode)
                     textNode.position = worldCoord
-                    let node = SCNNode()
+                    let backNode = SCNNode()
                     let plaque = SCNBox(width: 0.14, height: 0.1, length: 0.01, chamferRadius: 0.005)
                     plaque.firstMaterial?.diffuse.contents = UIColor(white: 1.0, alpha: 0.6)
-                    node.geometry = plaque
-                    node.position.y += 0.09
+                    backNode.geometry = plaque
+                    backNode.position.y += 0.09
                     
                     //Set up card view
                     let imageView = UIView(frame: CGRect(x: 0, y: 0, width: 800, height: 600))
@@ -209,7 +207,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
                     limitLabel.textAlignment = .center
                     limitLabel.numberOfLines = 1
                     limitLabel.font = UIFont(name: "Avenir", size: 63)
-                    limitLabel.text = "3 pills taken / \(result.maximum) limit"
+                    limitLabel.text = "X pills taken / \(result.maximum) limit"
                     limitLabel.backgroundColor = .clear
                     imageView.addSubview(limitLabel)
                     
@@ -222,15 +220,16 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
                     refillLabel.textColor = .red
                     imageView.addSubview(refillLabel)
                     
-                    let takePillButton = UIButton(frame: CGRect(x: 64, y: 491, width: imageView.frame.width-128, height: 84))
-                    takePillButton.titleLabel?.textAlignment = .center
-                    takePillButton.titleLabel?.numberOfLines = 1
-                    takePillButton.titleLabel?.font = UIFont(name: "Avenir", size: 42)
-                    takePillButton.setTitle("MARK AS TAKEN", for: .normal)
-                    takePillButton.backgroundColor =  UIColor(red: 96/255, green: 143/255, blue: 238/255, alpha: 1.0) /* #608fee */
-                    takePillButton.setTitleColor(.white, for: .normal)
-                    imageView.addSubview(takePillButton)
+                    //                    let takePillButton = UIButton(frame: CGRect(x: 64, y: 491, width: imageView.frame.width-128, height: 84))
+                    //                    takePillButton.titleLabel?.textAlignment = .center
+                    //                    takePillButton.titleLabel?.numberOfLines = 1
+                    //                    takePillButton.titleLabel?.font = UIFont(name: "Avenir", size: 42)
+                    //                    takePillButton.setTitle("MARK AS TAKEN", for: .normal)
+                    //                    takePillButton.backgroundColor =  UIColor(red: 96/255, green: 143/255, blue: 238/255, alpha: 1.0) /* #608fee */
+                    //                    takePillButton.setTitleColor(.white, for: .normal)
+                    //                    imageView.addSubview(takePillButton)
                     
+                    let buttonNode = self.createButton(size: CGSize(width: imageView.frame.width - 128, height: 84))
                     
                     let texture = UIImage.imageWithView(view: imageView)
                     
@@ -239,58 +238,19 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
                     infoGeometry.firstMaterial?.diffuse.contents = texture
                     infoNode.geometry = infoGeometry
                     infoNode.position.y += 0.09
-                    infoNode.position.z += 0.0054
-                    textNode.addChildNode(node)
-                    textNode.addChildNode(infoNode)
-                    textNode.constraints = [billboardConstraint]
+                    infoNode.position.z += 0.0055
                     
+                    textNode.addChildNode(backNode)
+                    textNode.addChildNode(infoNode)
+                    
+                    infoNode.addChildNode(buttonNode)
+                    buttonNode.position = infoNode.position
+                    buttonNode.position.y -= (0.125)
+                    textNode.constraints = [billboardConstraint]
                 }
             })
         }
     }
-    
-    func createNewBubbleParentNode(_ text : String) -> SCNNode {
-        // Warning: Creating 3D Text is susceptible to crashing. To reduce chances of crashing; reduce number of polygons, letters, smoothness, etc.
-        
-        // TEXT BILLBOARD CONSTRAINT
-        let billboardConstraint = SCNBillboardConstraint()
-        billboardConstraint.freeAxes = SCNBillboardAxis.Y
-        
-        // BUBBLE-TEXT
-        let bubble = SCNText(string: text, extrusionDepth: CGFloat(bubbleDepth))
-        var font = UIFont(name: "Arial", size: 0.15)
-        font = font?.withTraits(traits: .traitBold)
-        bubble.font = font
-        bubble.alignmentMode = kCAAlignmentCenter
-        bubble.firstMaterial?.diffuse.contents = UIColor(red: 96/255, green: 143/255, blue: 238/255, alpha: 1.0) /* #608fee */
-        bubble.firstMaterial?.specular.contents = UIColor.white
-        bubble.firstMaterial?.isDoubleSided = true
-        // bubble.flatness // setting this too low can cause crashes.
-        bubble.chamferRadius = CGFloat(bubbleDepth)
-        
-        // BUBBLE NODE
-        let (minBound, maxBound) = bubble.boundingBox
-        let bubbleNode = SCNNode(geometry: bubble)
-        // Centre Node - to Centre-Bottom point
-        bubbleNode.pivot = SCNMatrix4MakeTranslation( (maxBound.x - minBound.x)/2, minBound.y, bubbleDepth/2)
-        // Reduce default text size
-        bubbleNode.scale = SCNVector3Make(0.15, 0.15, 0.15)
-        bubbleNode.position.y += 0.20
-        
-        // CENTRE POINT NODE
-        let sphere = SCNSphere(radius: 0.005)
-        sphere.firstMaterial?.diffuse.contents = UIColor.cyan
-        let sphereNode = SCNNode(geometry: sphere)
-        
-        // BUBBLE PARENT NODE
-        let bubbleNodeParent = SCNNode()
-        bubbleNodeParent.addChildNode(bubbleNode)
-        bubbleNodeParent.addChildNode(sphereNode)
-        bubbleNodeParent.constraints = [billboardConstraint]
-        
-        return bubbleNodeParent
-    }
-    
 }
 
 
@@ -369,6 +329,27 @@ extension ARViewController {
         }
     }
     
-    
-}
+    func createButton(size: CGSize) -> SCNNode {
+        let buttonNode = SCNNode()
+        let buttonView = UIView(frame: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+        buttonView.backgroundColor = UIColor(red: 96/255, green: 143/255, blue: 238/255, alpha: 1.0) /* #608fee */
+        let buttonLabel = UILabel(frame: CGRect(x: 0, y: 0, width: buttonView.frame.width, height: buttonView.frame.height))
+        buttonLabel.backgroundColor = .clear
+        buttonLabel.textColor = .white
+        buttonLabel.text = "MARK AS TAKEN"
+        buttonLabel.font = UIFont(name: "Avenir", size: 42)
+        buttonLabel.textAlignment = .center
+        buttonView.addSubview(buttonLabel)
+        buttonNode.geometry = SCNBox(width: size.width / 6000, height: size.height / 6000, length: 0.002, chamferRadius: 0.0)
+        //buttonNode.geometry = SCNPlane(width: size.width / 6000, height: size.height / 6000)
+        let textMaterial = SCNMaterial()
+        textMaterial.diffuse.contents = UIImage.imageWithView(view: buttonView)
+        let blueMaterial = SCNMaterial()
+        blueMaterial.diffuse.contents = UIColor(red: 96/255, green: 143/255, blue: 238/255, alpha: 1.0) /* #608fee */
+        buttonNode.geometry?.materials = [textMaterial, blueMaterial, blueMaterial, blueMaterial, blueMaterial, blueMaterial]
+        //buttonNode.position.y
+        //buttonNode.position.x
+        return buttonNode
+    }
 
+}

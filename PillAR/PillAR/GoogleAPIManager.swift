@@ -130,6 +130,9 @@ class GoogleAPIManager {
                     let apiManager = HasuraAPIManager.shared()
                     var calls = 0
                     // Call hasura api for each result from Google
+                    responses = responses.map {
+                        $0.replacingOccurrences(of: " ", with: "-")
+                    }
                     print(responses)
                     var lowestResponseNum = 1000
                     var lowestResponse: (instructions: String, maximum: Int)? = nil

@@ -57,6 +57,7 @@ class HasuraAPIManager {
                     if (errorObj.dictionaryValue != [:]) {
                         print("Error code \(errorObj["code"]): \(errorObj["message"])")
                         completionHandler(nil)
+                        return
                     }
                     var instructions: String = "No instructions could be found"
                     var found = false
@@ -71,9 +72,12 @@ class HasuraAPIManager {
                     }
                     if found{
                         DataManager.shared().drugUsageCache[drug.lowercased()] = (instructions,maximum)
+                        print("6----------------")
                         completionHandler((instructions,maximum))
+                        return
                     }else{
                         completionHandler(nil)
+                        return
                     }
                 })
             }

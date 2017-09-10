@@ -101,9 +101,11 @@ class GoogleAPIManager {
                     print(error?.localizedDescription ?? "")
                     return
                 }
-                
+                print("4----------------")
+
                 DispatchQueue.main.async(execute: {
-                    
+                    print("5----------------")
+
                     // Use SwiftyJSON to parse results
                     let json = JSON(data: data)
                     let errorObj: JSON = json["error"]
@@ -137,11 +139,9 @@ class GoogleAPIManager {
                     var lowestResponseNum = 1000
                     var lowestResponse: (instructions: String, maximum: Int)? = nil
                     for response in responses {
-                        calls += 1
                         let handler = {
                             (data: (instructions: String, maximum: Int)?) in
-                            calls -= 1
-                            if data != nil{
+                            if data != nil {
                                 let responseIndex = responses.index(of: response)
                                 print("Response: \(responseIndex) \(response)")
                                 if responseIndex! <= lowestResponseNum {
@@ -149,13 +149,17 @@ class GoogleAPIManager {
                                     lowestResponse = data
                                 }
                             }
-                            if calls == 0{
+                            calls += 1
+                            if calls == responses.count {
                                 if lowestResponseNum == 1000{
+                                    
                                     completionHandler(nil)
                                 }else{
                                     print("FINAL RESULT")
                                     print("\(responses[lowestResponseNum]), \nmax: \(lowestResponse!.maximum), \ninstructions: \(lowestResponse!.instructions)")
+                                    print("7----------------")
                                     completionHandler((responses[lowestResponseNum], lowestResponse!.instructions, lowestResponse!.maximum))
+
                                 }
                             }
                         }

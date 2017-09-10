@@ -51,5 +51,10 @@
 	<string>Save training data</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Save training data</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 </dict>
 </plist>

@@ -30,6 +30,14 @@ class SinglePillViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
+    func initializeInfo(){
+        HasuraAPIManager.shared().getLogoForDrug(drug: drugTitleLabel.text!) { (image) in
+            self.drugImageView.image = image
+            self.drugImageView.contentMode = .scaleAspectFit
+        }
+        
+    }
+    
     func loadPillHistory(){
         historyEvents = [HistoryData]()
         for history in DataManager.shared().pillHistoryData{

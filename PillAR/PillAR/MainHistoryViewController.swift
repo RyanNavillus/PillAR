@@ -10,7 +10,7 @@ import UIKit
 
 let pillTakenUpdateNotification = Notification.Name("PillTakenNotification")
 
-class ViewController: UIViewController {
+class MainHistoryViewController: UIViewController {
 
     @IBOutlet weak var lastPillLabel: UILabel!
     @IBOutlet weak var lastPillTimeLabel: UILabel!
@@ -34,7 +34,7 @@ class ViewController: UIViewController {
         
         refreshLastPillTaken()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.refreshLastPillTaken), name: pillTakenUpdateNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MainHistoryViewController.refreshLastPillTaken), name: pillTakenUpdateNotification, object: nil)
         
     }
     

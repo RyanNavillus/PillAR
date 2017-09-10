@@ -15,10 +15,16 @@ import Photos
 
 class ARViewController: UIViewController, ARSCNViewDelegate {
     
+    var mainHistoryVC: MainHistoryViewController?
     // SCENE
     @IBOutlet var sceneView: ARSCNView!
     let bubbleDepth : Float = 0.01 // the 'depth' of 3D text
     var latestPrediction : String = "" // a variable containing the latest CoreML prediction
+    
+    var historyState:HistoryVisible = .Hidden
+    var historyYOffset:CGFloat = 170
+    
+    var tapGesture = UITapGestureRecognizer()
     
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
@@ -31,10 +37,19 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
         sceneView.scene = scene
         sceneView.autoenablesDefaultLighting = true
 
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(gestureRecognize:)))
+        tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(gestureRecognize:)))
+        tapGesture.delegate = self
         view.addGestureRecognizer(tapGesture)
         
+        if let mainHistoryVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MainHistoryVC") as? MainHistoryViewController{
+            self.mainHistoryVC = mainHistoryVC
+            mainHistoryVC.view.frame = UIScreen.main.bounds
+            mainHistoryVC.view.frame.origin.y = self.view.frame.height - historyYOffset
+            self.addChildViewController(mainHistoryVC)
+            self.view.addSubview(mainHistoryVC.view)
+            mainHistoryVC.didMove(toParentViewController: self)
+            
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -294,101 +309,34 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
 }
 
 
-
-extension UIFont {
-    // Based on: https://stackoverflow.com/questions/4713236/how-do-i-set-bold-and-italic-on-uilabel-of-iphone-ipad
-    func withTraits(traits:UIFontDescriptorSymbolicTraits...) -> UIFont {
-        let descriptor = self.fontDescriptor.withSymbolicTraits(UIFontDescriptorSymbolicTraits(traits))
-        return UIFont(descriptor: descriptor!, size: 0)
-    }
-}
-
-extension UIImage {
-    
-    func crop(to:CGSize) -> UIImage {
-        guard let cgimage = self.cgImage else { return self }
-        
-        let contextImage: UIImage = UIImage(cgImage: cgimage)
-        
-        let contextSize: CGSize = contextImage.size
-        
-        //Set to square
-        var posX: CGFloat = 0.0
-        var posY: CGFloat = 0.0
-        let cropAspect: CGFloat = to.width / to.height
-        
-        var cropWidth: CGFloat = to.width
-        var cropHeight: CGFloat = to.height
-        
-        if to.width > to.height { //Landscape
-            cropWidth = contextSize.width
-            cropHeight = contextSize.width / cropAspect
-            posY = (contextSize.height - cropHeight) / 2
-        } else if to.width < to.height { //Portrait
-            cropHeight = contextSize.height
-            cropWidth = contextSize.height * cropAspect
-            posX = (contextSize.width - cropWidth) / 2
-        } else { //Square
-            if contextSize.width >= contextSize.height { //Square on landscape (or square)
-                cropHeight = contextSize.height
-                cropWidth = contextSize.height * cropAspect
-                posX = (contextSize.width - cropWidth) / 2
-            }else{ //Square on portrait
-                cropWidth = contextSize.width
-                cropHeight = contextSize.width / cropAspect
-                posY = (contextSize.height - cropHeight) / 2
+extension ARViewController: UIGestureRecognizerDelegate{
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer == tapGesture{
+            if let mainHistoryVC = self.mainHistoryVC{
+                return  mainHistoryVC.view.frame.contains(gestureRecognizer.location(in: self.view)) == false
             }
         }
-        
-        let rect: CGRect = CGRect(x: posX, y: posY, width: cropWidth, height: cropHeight)
-        // Create bitmap image from context using the rect
-        let imageRef: CGImage = contextImage.cgImage!.cropping(to: rect)!
-        
-        // Create a new image based on the imageRef and rotate back to the original orientation
-        let cropped: UIImage = UIImage(cgImage: imageRef, scale: self.scale, orientation: .right)
-        
-        UIGraphicsBeginImageContextWithOptions(to, true, self.scale)
-        cropped.draw(in: CGRect(x: 0, y: 0, width: to.width, height: to.height))
-        let resized = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return resized!
+        return true
     }
     
-    func zoom(to scale: CGFloat) -> UIImage? {
-        var sideLength: CGFloat = 0;
-        let imageHeight = self.size.height
-        let imageWidth = self.size.width
-        
-        if imageHeight > imageWidth {
-            sideLength = imageWidth
-        }
-        else {
-            sideLength = imageHeight
-        }
-        
-        let size = CGSize(width: sideLength, height: sideLength)
-        
-        let x = (size.width / 2) - (size.width / (2 * scale))
-        let y = (size.height / 2) - (size.width / (2 * scale))
-        
-        let cropRect = CGRect(x: x, y: y, width: size.width / scale, height: size.height / scale)
-        if let imageRef = cgImage!.cropping(to: cropRect) {
-            return UIImage(cgImage: imageRef, scale: 1.0, orientation: imageOrientation)
-        }
-        
-        return nil
-    }
 }
 
+enum HistoryVisible {
+    case Visible
+    case Hidden
+}
 
-extension UIImage {
-    class func imageWithView(view: UIView) -> UIImage {
-        UIGraphicsBeginImageContextWithOptions(view.bounds.size, false, 0.0)
-        view.drawHierarchy(in: view.bounds, afterScreenUpdates: true)
-        let img = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return img!
+//MARK: -  Interaction with History VC
+extension ARViewController {
+    
+    func toggle(state: HistoryVisible){
+        if state != self.historyState {
+            print("Animating History State Change")
+            
+            
+        }
     }
+    
+    
 }
 

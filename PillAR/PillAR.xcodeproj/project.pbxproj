@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3B17CD171F639DB90011CE7E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B17CD161F639DB90011CE7E /* AppDelegate.swift */; };
-		3B17CD191F639DB90011CE7E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B17CD181F639DB90011CE7E /* ViewController.swift */; };
+		3B17CD191F639DB90011CE7E /* MainHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B17CD181F639DB90011CE7E /* MainHistoryViewController.swift */; };
 		3B17CD1C1F639DB90011CE7E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B17CD1A1F639DB90011CE7E /* Main.storyboard */; };
 		3B17CD1F1F639DB90011CE7E /* PillAR.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3B17CD1D1F639DB90011CE7E /* PillAR.xcdatamodeld */; };
 		3B17CD211F639DB90011CE7E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B17CD201F639DB90011CE7E /* Assets.xcassets */; };
@@ -18,6 +18,7 @@
 		891AB7909DF442F2E8BD903B /* Pods_PillAR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32A29F1294CFAA34F2368B18 /* Pods_PillAR.framework */; };
 		BB1317431F64D8140004BF4F /* SinglePillViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1317421F64D8140004BF4F /* SinglePillViewController.swift */; };
 		BB1317451F64DCAA0004BF4F /* SingleHistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1317441F64DCAA0004BF4F /* SingleHistoryTableViewCell.swift */; };
+		BB1317471F64E8DF0004BF4F /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1317461F64E8DF0004BF4F /* Extensions.swift */; };
 		BB232D181F6470D600362F0B /* HistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB232D171F6470D600362F0B /* HistoryTableViewCell.swift */; };
 		BB232D1A1F6470E400362F0B /* HistoryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB232D191F6470E400362F0B /* HistoryData.swift */; };
 		BB232D1C1F64D0E800362F0B /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB232D1B1F64D0E800362F0B /* DataManager.swift */; };
@@ -30,7 +31,7 @@
 		32A29F1294CFAA34F2368B18 /* Pods_PillAR.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PillAR.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B17CD131F639DB90011CE7E /* PillAR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PillAR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B17CD161F639DB90011CE7E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		3B17CD181F639DB90011CE7E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		3B17CD181F639DB90011CE7E /* MainHistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainHistoryViewController.swift; sourceTree = "<group>"; };
 		3B17CD1B1F639DB90011CE7E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3B17CD1E1F639DB90011CE7E /* PillAR.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PillAR.xcdatamodel; sourceTree = "<group>"; };
 		3B17CD201F639DB90011CE7E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -41,6 +42,7 @@
 		B7AA8AB37CD8AA8D850B546F /* Pods-PillAR.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PillAR.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PillAR/Pods-PillAR.debug.xcconfig"; sourceTree = "<group>"; };
 		BB1317421F64D8140004BF4F /* SinglePillViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SinglePillViewController.swift; sourceTree = "<group>"; };
 		BB1317441F64DCAA0004BF4F /* SingleHistoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleHistoryTableViewCell.swift; sourceTree = "<group>"; };
+		BB1317461F64E8DF0004BF4F /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		BB232D171F6470D600362F0B /* HistoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryTableViewCell.swift; sourceTree = "<group>"; };
 		BB232D191F6470E400362F0B /* HistoryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryData.swift; sourceTree = "<group>"; };
 		BB232D1B1F64D0E800362F0B /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
@@ -92,11 +94,12 @@
 			isa = PBXGroup;
 			children = (
 				3B17CD161F639DB90011CE7E /* AppDelegate.swift */,
-				3B17CD181F639DB90011CE7E /* ViewController.swift */,
+				3B17CD181F639DB90011CE7E /* MainHistoryViewController.swift */,
 				3B17CD2B1F639FDA0011CE7E /* GoogleAPIManager.swift */,
 				3BF8F2761F6490880042636F /* HasuraAPIManager.swift */,
 				BB232D1B1F64D0E800362F0B /* DataManager.swift */,
 				BB260F6C1F63C5AC006743ED /* ARViewController.swift */,
+				BB1317461F64E8DF0004BF4F /* Extensions.swift */,
 				3B17CD1A1F639DB90011CE7E /* Main.storyboard */,
 				BB1317441F64DCAA0004BF4F /* SingleHistoryTableViewCell.swift */,
 				BB1317421F64D8140004BF4F /* SinglePillViewController.swift */,
@@ -155,7 +158,7 @@
 				TargetAttributes = {
 					3B17CD121F639DB90011CE7E = {
 						CreatedOnToolsVersion = 7.0;
-						DevelopmentTeam = G54TLNA64K;
+						DevelopmentTeam = 9XWYL3K4YT;
 					};
 				};
 			};
@@ -251,7 +254,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3B17CD191F639DB90011CE7E /* ViewController.swift in Sources */,
+				3B17CD191F639DB90011CE7E /* MainHistoryViewController.swift in Sources */,
 				BB904DBE1F646C84004C545D /* AllHistoryViewController.swift in Sources */,
 				BB232D181F6470D600362F0B /* HistoryTableViewCell.swift in Sources */,
 				3B17CD1F1F639DB90011CE7E /* PillAR.xcdatamodeld in Sources */,
@@ -264,6 +267,7 @@
 				BB260F6D1F63C5AC006743ED /* ARViewController.swift in Sources */,
 				BB232D1A1F6470E400362F0B /* HistoryData.swift in Sources */,
 				BB1317431F64D8140004BF4F /* SinglePillViewController.swift in Sources */,
+				BB1317471F64E8DF0004BF4F /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -377,7 +381,7 @@
 			baseConfigurationReference = B7AA8AB37CD8AA8D850B546F /* Pods-PillAR.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = G54TLNA64K;
+				DEVELOPMENT_TEAM = 9XWYL3K4YT;
 				INFOPLIST_FILE = PillAR/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -392,7 +396,7 @@
 			baseConfigurationReference = FA263594C2CDDDEB8526C0FD /* Pods-PillAR.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = G54TLNA64K;
+				DEVELOPMENT_TEAM = 9XWYL3K4YT;
 				INFOPLIST_FILE = PillAR/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

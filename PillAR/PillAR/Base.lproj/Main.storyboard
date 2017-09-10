@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13189.4" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13189.4" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Box-QK-dxV">
     <device id="ipad10_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -364,10 +364,10 @@ Take 1 more pill today</string>
             </objects>
             <point key="canvasLocation" x="-692.08633093525179" y="28.597122302158276"/>
         </scene>
-        <!--View Controller-->
+        <!--Main History View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController storyboardIdentifier="FeaturesVC" id="BYZ-38-t0r" customClass="ViewController" customModule="PillAR" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MainHistoryVC" id="BYZ-38-t0r" customClass="MainHistoryViewController" customModule="PillAR" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>

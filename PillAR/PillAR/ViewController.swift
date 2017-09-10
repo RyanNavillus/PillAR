@@ -8,8 +8,14 @@
 
 import UIKit
 
+let pillTakenUpdateNotification = Notification.Name("PillTakenNotification")
+
 class ViewController: UIViewController {
 
+    @IBOutlet weak var lastPillLabel: UILabel!
+    @IBOutlet weak var lastPillTimeLabel: UILabel!
+    
+    
     @IBOutlet weak var subsectionView: UIView!
     var historyTableVC:AllHistoryViewController?
     override func viewDidLoad() {
@@ -26,7 +32,16 @@ class ViewController: UIViewController {
             historyVC.didMove(toParentViewController: self)
         }
         
+        refreshLastPillTaken()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.refreshLastPillTaken), name: pillTakenUpdateNotification, object: nil)
+        
+    }
+    
+    func refreshLastPillTaken(){
+        let lastPill = DataManager.shared().pillHistoryData.first!
+        lastPillLabel.text = "Last Pill Taken: \(lastPill.drugName)"
+        lastPillTimeLabel.text = "\(lastPill.timeTaken.timestringFromNow())"
     }
     
 

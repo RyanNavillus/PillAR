@@ -36,6 +36,11 @@ class DataManager {
         pillHistoryData.append(HistoryData(drugName: "Advil", maxDailyDosage: 3, takenToday: 2, timeTaken: dateFormatter.date(from: "09-09-2017 11:15:35 EST")!))
         pillHistoryData.append(HistoryData(drugName: "Advil", maxDailyDosage: 3, takenToday: 3, timeTaken: dateFormatter.date(from: "09-09-2017 15:53:26 EST")!, actionStatement: "YOU MAY NEED TO REFILL SOON"))
         pillHistoryData.append(HistoryData(drugName: "Alka-Seltzer", maxDailyDosage: 5, takenToday: 1, timeTaken: dateFormatter.date(from: "09-09-2017 19:20:01 EST")!))
+        
+        
+        pillHistoryData.sort { (h1, h2) -> Bool in
+            return h1.timeTaken > h2.timeTaken 
+        }
     }
     
     

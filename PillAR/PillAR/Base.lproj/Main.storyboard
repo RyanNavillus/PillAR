@@ -490,6 +490,8 @@ Take 1 more pill today</string>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="lastPillLabel" destination="Yj2-Ur-2k3" id="uW1-Gf-CyX"/>
+                        <outlet property="lastPillTimeLabel" destination="Iuy-W3-R60" id="JoA-gn-QCY"/>
                         <outlet property="subsectionView" destination="I5a-Ly-i5r" id="k48-v3-qsd"/>
                     </connections>
                 </viewController>

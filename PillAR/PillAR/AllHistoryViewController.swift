@@ -82,7 +82,7 @@ extension AllHistoryViewController: UITableViewDelegate, UITableViewDataSource {
         if let singlePillVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SinglePillVC") as? SinglePillViewController{
             singlePillVC.view.frame = UIScreen.main.bounds
            singlePillVC.drugTitleLabel.text = data.drugName.capitalized
-            
+            singlePillVC.loadPillHistory()
             
            self.present(singlePillVC, animated: true, completion: nil)
         }

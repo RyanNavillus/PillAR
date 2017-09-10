@@ -102,7 +102,7 @@ def getLogo(medication):
     url = "https://api.cognitive.microsoft.com/bing/v5.0/images/search"
     medication += " logos"
     payload = {'q': str(medication)}
-    headers = {'Ocp-Apim-Subscription-Key': '25966d8278644b1f83123e48c9a06289'}
+    headers = {'Ocp-Apim-Subscription-Key': '7ff76866f7e849f090d2e89e5f0e21ea'}
     r = requests.get(url, params=payload, headers=headers).json()
     imgURL = r['value'][0]['contentUrl']
     imgURLJSON = {'url': imgURL}

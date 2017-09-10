@@ -10,8 +10,8 @@ dosageHeadings = ["Adult:", "Adults and Children:"]
 @app.route("/medication/<medication>")
 def getMedicationInfo(medication):
 
-    medication.split(' ').join('-')
-    medication.split('%20').join('-')
+    # medication.split(' ').join('-')
+    # medication.split('%20').join('-')
 
     url="http://www.empr.com/search/%s/"
     url=url%(medication)
@@ -42,6 +42,9 @@ def getMedicationInfo(medication):
                 return json.dumps({'instructions': "Fully chew then swallow 1-2 chewable tablets as symptoms occur. Do not take more than 5 chewable tablets in a 24-hour period", "maximum": 5})
             else:
                 return json.dumps({'error':'try again'})
+
+        # if 'tylenol' in medication:
+        #     return json.dumps({'instructions': ""})
 
         sections = soup1.find('section', class_='drug-monograph-section')
         headings = sections.find_all('h2')

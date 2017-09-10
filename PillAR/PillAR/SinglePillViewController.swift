@@ -44,24 +44,27 @@ class SinglePillViewController: UIViewController {
             self.drugImageView.contentMode = .scaleAspectFit
         }
         
-        var pillsTakenToday = 0
+        var pillsTakenPast24 = 0
         for pill in self.historyEvents{
             if pill.timeTaken.daysBetweenDate(toDate: Date()) == 0{
-                pillsTakenToday += 1
+                pillsTakenPast24 += 1
             }
         }
+        
+        let pillsTakenToday = HistoryData.calculateTakenToday(drugName: self.drugTitleLabel.text!)
         
         var dailyDoseString = "Daily Dose: "
         var instructionsString = "Instructions: "
         HasuraAPIManager.shared().getUsageForDrug(drugTitleLabel.text!.lowercased()) { (result) in
             if let result = result{
-                dailyDoseString.append("\(pillsTakenToday) pills taken / \(result.maximumDose) daily limit\n")
+                dailyDoseString.append("\(pillsTakenToday) pills taken today / \(result.maximumDose) daily limit\n")
+                dailyDoseString.append("Past 24 Hours: \(pillsTakenPast24) pills taken\n")
                 if result.maximumDose == pillsTakenToday{
                     dailyDoseString.append("You should not take any more pills today\n")
                 }else if result.maximumDose > pillsTakenToday{
                     let difference = result.maximumDose - pillsTakenToday
                     if difference == 1{
-                        dailyDoseString.append("You can take up to \(difference) more pill1 today.\n")
+                        dailyDoseString.append("You can take up to \(difference) more pill today.\n")
                     }else{
                         dailyDoseString.append("You can take up to \(difference) more pills today.\n")
                     }

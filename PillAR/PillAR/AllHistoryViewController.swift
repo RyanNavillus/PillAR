@@ -75,12 +75,12 @@ extension AllHistoryViewController: UITableViewDelegate, UITableViewDataSource {
             cell.descriptionLabel.text = "\(data.takenToday) / \(data.maxDailyDosage) pills taken today"
             if data.takenToday < data.maxDailyDosage{
                 let numberToTake = data.maxDailyDosage - data.takenToday
-                cell.actionLabel.text = "\(numberToTake) MORE TO TAKE TODAY"
+                cell.actionLabel.text = "\(numberToTake) more to take today"
             }else if data.takenToday == data.maxDailyDosage{
                 cell.actionLabel.text = "You are all set with your \(data.drugName) today"
             }else if data.takenToday > data.maxDailyDosage{
                 let numberToTake = data.takenToday - data.maxDailyDosage
-                cell.actionLabel.text = "YOU TOOK \(numberToTake) TOO MANY TODAY"
+                cell.actionLabel.text = "you took \(numberToTake) too many today!!"
             }
             if data.actionStatement != ""{
                 cell.actionLabel.text = data.actionStatement

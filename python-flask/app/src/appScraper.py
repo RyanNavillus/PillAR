@@ -28,14 +28,14 @@ def getMedicationInfo(medication):
                 searchResultList.append(str(i.a.get('href')))
 
         # medicationURL = searchResultList[0]
-        if searchResultList[0]:
-            medicationURL = searchResultList[0]
-        else: 
-            return json.dumps({'instructions': "Fully chew then swallow 1-2 chewable tablets as symptoms occur. Do not take more than 5 chewable tablets in a 24-hour period", "maximum": 5})
+        medicationURL = searchResultList[0]
 
         request1 = urllib2.urlopen(medicationURL)
         result1 = request1.read()
         soup1 = BeautifulSoup(result1, 'html.parser')
+
+        if not soup1.find('section', class_='drug-monograph-section'):
+            return json.dumps({'instructions': "Fully chew then swallow 1-2 chewable tablets as symptoms occur. Do not take more than 5 chewable tablets in a 24-hour period", "maximum": 5})
 
         sections = soup1.find('section', class_='drug-monograph-section')
         headings = sections.find_all('h2')

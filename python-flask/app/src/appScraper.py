@@ -33,8 +33,7 @@ def getMedicationInfo(medication):
                 searchResultHeader = str(i.a.get_text())
                 break
 
-        medicationSearch = medication.split('-').join(" ")
-        if "Drug Monograph" not in searchResultCategory and medicationSearch not in searchResultHeader:
+        if "Drug Monograph" not in searchResultCategory and medication not in searchResultHeader:
             if 'alka' in medication:
                 return json.dumps({'instructions': "Fully chew then swallow 1-2 chewable tablets as symptoms occur. Do not take more than 5 chewable tablets in a 24-hour period", "maximum": 5})
             return json.dumps({'error':'try again'})

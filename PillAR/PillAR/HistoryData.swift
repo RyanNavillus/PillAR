@@ -11,16 +11,40 @@ class HistoryData: NSObject {
     
     var drugName: String = ""
     var maxDailyDosage: Int = 0
-    var takenToday: Int = 0
+    var takenToday: Int = 1
     var timeTaken: Date = Date()
     var actionStatement: String = ""
     
-    init(drugName: String, maxDailyDosage:Int = 4, takenToday:Int = 0, timeTaken: Date = Date(), actionStatement: String = ""){
+    init(drugName: String, maxDailyDosage:Int = 4, todayDose: Int = 1, timeTaken: Date = Date(), actionStatement: String = "", calculateTodayDose:Bool = false){
+        super.init()
         self.drugName = drugName
         self.maxDailyDosage = maxDailyDosage
-        self.takenToday = takenToday
         self.timeTaken = timeTaken
+        self.takenToday = todayDose
         self.actionStatement = actionStatement
+        if calculateTodayDose{
+            calculateTakenToday()
+        }
+    }
+    
+    func calculateTakenToday(){
+        var similarPills = [HistoryData]()
+        for pill in DataManager.shared().pillHistoryData {
+            if pill.drugName.lowercased() == self.drugName.lowercased(){
+                similarPills.append(pill)
+            }
+        }
+        
+        var sameDay = 0
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM-dd-yyyy"
+        for history in similarPills{
+            if dateFormatter.string(from: history.timeTaken) == dateFormatter.string(from: Date()){
+                sameDay += 1
+            }
+        }
+        self.takenToday = sameDay + 1
+        
     }
     
     func toDictionary()->[String:Any]{

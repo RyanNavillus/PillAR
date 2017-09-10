@@ -26,7 +26,13 @@ class HasuraAPIManager {
         return sharedInstance
     }
     
-    func getUsageForDrug(_ drug: String, completionHandler: @escaping (((String, Int)?) ->())) {
+    func getUsageForDrug(_ drug: String, completionHandler: @escaping (((instructions: String,maximumDose: Int)?) ->())) {
+        
+        if  DataManager.shared().drugUsageCache[drug.lowercased()] != nil {
+            let cachedResult = DataManager.shared().drugUsageCache[drug]
+            completionHandler(cachedResult)
+            return
+        }
         
         // Create our request URL
         
@@ -63,6 +69,7 @@ class HasuraAPIManager {
                         maximum = maxim
                     }
                     if found{
+                        DataManager.shared().drugUsageCache[drug.lowercased()] = (instructions,maximum)
                         completionHandler((instructions,maximum))
                     }else{
                         completionHandler(nil)

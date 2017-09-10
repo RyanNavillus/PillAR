@@ -28,6 +28,19 @@ class AllHistoryViewController: UIViewController {
         let line = UIView(frame: CGRect(x: 189, y: 0, width: 8, height: self.view.frame.height))
         line.backgroundColor = UIColor(red: 0.867, green: 0.878, blue: 0.918, alpha: 1.00)
         self.view.insertSubview(line, belowSubview: tableView)
+        
+        NotificationCenter.default.addObserver(forName: pillTakenUpdateNotification, object: nil, queue: nil) { (notification) in
+            self.tableView.reloadData()
+        }
+        
+        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { (timer) in
+            self.updateInfo()
+        }
+        
+    }
+    
+    func updateInfo(){
+        self.tableView.reloadData()
     }
 }
 
@@ -84,7 +97,6 @@ extension AllHistoryViewController: UITableViewDelegate, UITableViewDataSource {
         if let singlePillVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SinglePillVC") as? SinglePillViewController{
             singlePillVC.view.frame = UIScreen.main.bounds
            singlePillVC.drugTitleLabel.text = data.drugName.capitalized
-            singlePillVC.loadPillHistory()
             singlePillVC.initializeInfo()
            self.present(singlePillVC, animated: true, completion: nil)
         }
@@ -127,9 +139,9 @@ extension Date {
             return "\(now.minutes(from: self)) minutes ago"
         }
         if now.seconds(from: self) > 0 {
-            return "\(now.seconds(from: self)) days ago"
+            return "\(now.seconds(from: self)) seconds ago"
         }
-        return ""
+        return "Just taken"
     }
 }
 

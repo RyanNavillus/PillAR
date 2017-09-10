@@ -20,6 +20,8 @@ class MainHistoryViewController: UIViewController {
     @IBOutlet weak var toggleHistoryButton: UIButton!
     @IBOutlet weak var toggleHistoryArrowImage: UIImageView!
     
+    
+    
     @IBOutlet weak var subsectionView: UIView!
     var historyTableVC:AllHistoryViewController?
     override func viewDidLoad() {
@@ -55,6 +57,13 @@ class MainHistoryViewController: UIViewController {
                 }
             }, completion: nil)
         }
+        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { (timer) in
+            self.updateInfo()
+        }
+    }
+    
+    func updateInfo(){
+        refreshLastPillTaken()
     }
     
     func refreshLastPillTaken(){
@@ -63,12 +72,6 @@ class MainHistoryViewController: UIViewController {
         lastPillTimeLabel.text = "\(lastPill.timeTaken.timestringFromNow())"
     }
     
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
     @IBAction func toggleHistoryButtonClicked(_ sender: Any) {
         NotificationCenter.default.post(name: toggleHistoryActionNotification, object: nil)
     }

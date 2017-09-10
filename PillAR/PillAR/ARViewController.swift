@@ -41,24 +41,25 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
         tapGesture.delegate = self
         view.addGestureRecognizer(tapGesture)
         
-        HasuraAPIManager.shared().getLogoForDrug(drug: "Advil") { (image) in
-            print("Returned")
-        }
-        
-        
+//        HasuraAPIManager.shared().getLogoForDrug(drug: "Advil") { (image) in
+//            print("Returned")
+//        }
+        self.delay(0.1) {
+            
         if let mainHistoryVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MainHistoryVC") as? MainHistoryViewController{
             self.mainHistoryVC = mainHistoryVC
             mainHistoryVC.view.frame = UIScreen.main.bounds
-            mainHistoryVC.view.frame.origin.y = self.view.frame.height - historyYOffset
+            mainHistoryVC.view.frame.origin.y = self.view.frame.height - self.historyYOffset
             self.addChildViewController(mainHistoryVC)
             self.view.addSubview(mainHistoryVC.view)
             mainHistoryVC.didMove(toParentViewController: self)
-            panGesture = UIPanGestureRecognizer(target: self, action: #selector(ARViewController.handlePanGesture(_:)))
-            mainHistoryVC.topSharedView.addGestureRecognizer(panGesture)
+            self.panGesture = UIPanGestureRecognizer(target: self, action: #selector(ARViewController.handlePanGesture(_:)))
+            mainHistoryVC.topSharedView.addGestureRecognizer(self.panGesture)
             
             NotificationCenter.default.addObserver(forName: toggleHistoryActionNotification, object: nil, queue: nil, using: { (notification) in
                 self.toggleState()
             })
+        }
         }
     }
     

@@ -35,7 +35,13 @@ def getMedicationInfo(medication):
         soup1 = BeautifulSoup(result1, 'html.parser')
 
         if not soup1.find('section', class_='drug-monograph-section'):
-            return json.dumps({'instructions': "Fully chew then swallow 1-2 chewable tablets as symptoms occur. Do not take more than 5 chewable tablets in a 24-hour period", "maximum": 5})
+            if 'alka' in medication:
+                return json.dumps({'instructions': "Fully chew then swallow 1-2 chewable tablets as symptoms occur. Do not take more than 5 chewable tablets in a 24-hour period", "maximum": 5})
+            else:
+                return json.dumps({'error':'try again'})
+
+        # if 'tylenol' in medication:
+        #     return json.dumps({'instructions': ""})
 
         sections = soup1.find('section', class_='drug-monograph-section')
         headings = sections.find_all('h2')
@@ -99,12 +105,14 @@ def findMax(text):
         return int(re.search(r'every \d hours for \d\d doses', text, re.I|re.M).group()[-8:-6])
     if re.search(r'max \d\d', text, re.I|re.M) is not None:
         num = int(re.search(r'max \d\d', text, re.I|re.M).group()[4:6])
-        return int(round(num/0.5))
+        #return int(round(num/0.5))
+        return num
     if re.search(r'max \d dose', text, re.I|re.M) is not None or re.search(r'max \d tab', text, re.I|re.M) is not None:
         return int(re.search(r'max \d', text, re.I|re.M).group()[4])
     if re.search(r'max \d', text, re.I|re.M) is not None:
         num = int(re.search(r'max \d', text, re.I|re.M).group()[4])
-        return int(round(num/0.3))
+        #return int(round(num/0.3))
+        return num
     if re.search(r'max: \d', text, re.I|re.M) is not None:
         return int(re.search(r'max: \d', text, re.I|re.M).group()[5])
     if re.search(r'every \d hours', text, re.I|re.M) is not None:

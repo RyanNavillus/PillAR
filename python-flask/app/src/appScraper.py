@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 import re, requests
 
 dosageHeadings = ["Adult:", "Adults and Children:"]
-listToIgnore = ["plastic-bottle", "bottle", "drink", "liquid", "orange-drink", "orange-soft-drink", "lotion", "tablet", "nail", "flavor", "font", "food-additive", "human-leg", "junk-food", "gummy-candy", "material"]
+listToIgnore = ["plastic-bottle", "bottle", "drink", "liquid", "orange-drink", "orange-soft-drink", "lotion", "tablet", "nail", "flavor", "font", "food-additive", "human-leg", "junk-food", "gummy-candy", "material", "tablet-computer"]
 @app.route("/")
 @app.route("/medication/<medication>")
 def getMedicationInfo(medication):
@@ -92,7 +92,7 @@ def getMedicationInfo(medication):
         if medication == "tums":
             medicationInfo['maximum'] = 7
         if medication == "motrin":
-            medicationInfo['maximum'] = 3
+            medicationInfo['maximum'] = 6
     #return newHTML
     #frequency, max, num of mg per pill
     return json.dumps(medicationInfo)

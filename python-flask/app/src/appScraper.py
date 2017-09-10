@@ -10,9 +10,6 @@ dosageHeadings = ["Adult:", "Adults and Children:"]
 @app.route("/medication/<medication>")
 def getMedicationInfo(medication):
 
-    # medication.split(' ').join('-')
-    # medication.split('%20').join('-')
-
     url="http://www.empr.com/search/%s/"
     url=url%(medication)
     request = urllib2.urlopen(url)
@@ -108,12 +105,14 @@ def findMax(text):
         return int(re.search(r'every \d hours for \d\d doses', text, re.I|re.M).group()[-8:-6])
     if re.search(r'max \d\d', text, re.I|re.M) is not None:
         num = int(re.search(r'max \d\d', text, re.I|re.M).group()[4:6])
-        return int(round(num/0.5))
+        #return int(round(num/0.5))
+        return num
     if re.search(r'max \d dose', text, re.I|re.M) is not None or re.search(r'max \d tab', text, re.I|re.M) is not None:
         return int(re.search(r'max \d', text, re.I|re.M).group()[4])
     if re.search(r'max \d', text, re.I|re.M) is not None:
         num = int(re.search(r'max \d', text, re.I|re.M).group()[4])
-        return int(round(num/0.3))
+        #return int(round(num/0.3))
+        return num
     if re.search(r'max: \d', text, re.I|re.M) is not None:
         return int(re.search(r'max: \d', text, re.I|re.M).group()[5])
     if re.search(r'every \d hours', text, re.I|re.M) is not None:

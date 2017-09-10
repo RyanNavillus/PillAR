@@ -18,6 +18,7 @@
 		891AB7909DF442F2E8BD903B /* Pods_PillAR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32A29F1294CFAA34F2368B18 /* Pods_PillAR.framework */; };
 		BB232D181F6470D600362F0B /* HistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB232D171F6470D600362F0B /* HistoryTableViewCell.swift */; };
 		BB232D1A1F6470E400362F0B /* HistoryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB232D191F6470E400362F0B /* HistoryData.swift */; };
+		BB232D1C1F64D0E800362F0B /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB232D1B1F64D0E800362F0B /* DataManager.swift */; };
 		BB260F6D1F63C5AC006743ED /* ARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB260F6C1F63C5AC006743ED /* ARViewController.swift */; };
 		BB904DBE1F646C84004C545D /* AllHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB904DBD1F646C84004C545D /* AllHistoryViewController.swift */; };
 		BB904DC01F646C8C004C545D /* PillListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB904DBF1F646C8C004C545D /* PillListViewController.swift */; };
@@ -38,6 +39,7 @@
 		B7AA8AB37CD8AA8D850B546F /* Pods-PillAR.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PillAR.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PillAR/Pods-PillAR.debug.xcconfig"; sourceTree = "<group>"; };
 		BB232D171F6470D600362F0B /* HistoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryTableViewCell.swift; sourceTree = "<group>"; };
 		BB232D191F6470E400362F0B /* HistoryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryData.swift; sourceTree = "<group>"; };
+		BB232D1B1F64D0E800362F0B /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		BB260F6C1F63C5AC006743ED /* ARViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewController.swift; sourceTree = "<group>"; };
 		BB904DBD1F646C84004C545D /* AllHistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllHistoryViewController.swift; sourceTree = "<group>"; };
 		BB904DBF1F646C8C004C545D /* PillListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillListViewController.swift; sourceTree = "<group>"; };
@@ -89,6 +91,7 @@
 				3B17CD181F639DB90011CE7E /* ViewController.swift */,
 				3B17CD2B1F639FDA0011CE7E /* GoogleAPIManager.swift */,
 				3BF8F2761F6490880042636F /* HasuraAPIManager.swift */,
+				BB232D1B1F64D0E800362F0B /* DataManager.swift */,
 				BB260F6C1F63C5AC006743ED /* ARViewController.swift */,
 				3B17CD1A1F639DB90011CE7E /* Main.storyboard */,
 				BB232D171F6470D600362F0B /* HistoryTableViewCell.swift */,
@@ -217,7 +220,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		5EC7B193C28259C33BCC2A27 /* [CP] Copy Pods Resources */ = {
@@ -250,6 +253,7 @@
 				BB904DC01F646C8C004C545D /* PillListViewController.swift in Sources */,
 				3BF8F2771F6490880042636F /* HasuraAPIManager.swift in Sources */,
 				3B17CD2C1F639FDA0011CE7E /* GoogleAPIManager.swift in Sources */,
+				BB232D1C1F64D0E800362F0B /* DataManager.swift in Sources */,
 				BB260F6D1F63C5AC006743ED /* ARViewController.swift in Sources */,
 				BB232D1A1F6470E400362F0B /* HistoryData.swift in Sources */,
 			);

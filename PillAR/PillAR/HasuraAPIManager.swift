@@ -25,12 +25,12 @@ class HasuraAPIManager {
         return sharedInstance
     }
     
-    func getUsageForDrug(_ drug: String, completionHandler: @escaping (((Int, Int, Int)?) ->())) {
+    func getUsageForDrug(_ drug: String, completionHandler: @escaping (((String, Int)?) ->())) {
         
         // Create our request URL
         
         var request = URLRequest(url: hasuraURL.appendingPathComponent(drug))
-        request.httpMethod = "POST"
+        request.httpMethod = "GET"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
         // Run the request on a background thread
@@ -38,35 +38,38 @@ class HasuraAPIManager {
             let task: URLSessionDataTask = self.session.dataTask(with: request) { (data, response, error) in
                 guard let data = data, error == nil else {
                     print(error?.localizedDescription ?? "")
+                    completionHandler(nil)
                     return
                 }
                 
                 DispatchQueue.main.async(execute: {
-                    
                     // Use SwiftyJSON to parse results
                     let json = JSON(data: data)
                     let errorObj: JSON = json["error"]
                     if (errorObj.dictionaryValue != [:]) {
                         print("Error code \(errorObj["code"]): \(errorObj["message"])")
+                        completionHandler(nil)
                     }
-                    print(json)
-                    var responses: [String] = []
-                    if let logoResults = json["responses"][0]["logoAnnotations"].array, logoResults.count > 0 {
-                        for item in logoResults{
-                            if let description = item["description"].string {
-                                responses.append(description)
-                            }
-                        }
+                    var instructions: String = "No instructions could be found"
+                    var found = false
+                    if let info = json["instructions"].string {
+                        found = true
+                        instructions = info
                     }
-                    
-                    completionHandler((1,1,1))
+                    var maximum = 1
+                    if let maxim = json["maximum"].int{
+                        found = true
+                        maximum = maxim
+                    }
+                    if found{
+                        completionHandler((instructions,maximum))
+                    }else{
+                        completionHandler(nil)
+                    }
                 })
             }
-            
             task.resume()
         }
-        
-        completionHandler(nil)
     }
     
 }

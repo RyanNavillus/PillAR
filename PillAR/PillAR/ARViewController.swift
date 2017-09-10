@@ -20,6 +20,8 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
     let bubbleDepth : Float = 0.01 // the 'depth' of 3D text
     var latestPrediction : String = "" // a variable containing the latest CoreML prediction
     
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -28,7 +30,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
         let scene = SCNScene()
         sceneView.scene = scene
         sceneView.autoenablesDefaultLighting = true
-        
+
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(gestureRecognize:)))
         view.addGestureRecognizer(tapGesture)
@@ -90,6 +92,8 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
         return UIImage(cgImage: cgImage)
     }
     
+    var fetchingResults = false
+    
     @objc func handleTap(gestureRecognize: UITapGestureRecognizer) {
         
         print("Screen Hit")
@@ -125,16 +129,19 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
                 }
             })
 
-            // Testing
-//            let imageView = UIImageView(image: image)
-//            imageView.frame.size = CGSize(width: view.frame.width, height: view.frame.width)
-//            imageView.center = view.center
-//            imageView.contentMode = .scaleAspectFit
-//            view.addSubview(imageView)
-            
+            print("Sending Image")
+            if fetchingResults == true{
+                return
+            }else{
+                fetchingResults = true
+                activityIndicator.startAnimating()
+            }
             GoogleAPIManager.shared().identifyDrug(image: image, completionHandler: { (result) in
+                self.fetchingResults = false
+                self.activityIndicator.stopAnimating()
                 if let result = result {
-                    let textNode : SCNNode = self.createNewBubbleParentNode(result)
+                    
+                    let textNode : SCNNode = self.createNewBubbleParentNode(result.itemName)
                     self.sceneView.scene.rootNode.addChildNode(textNode)
                     textNode.position = worldCoord
                     let node = SCNNode()
@@ -150,10 +157,10 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
                     let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: imageView.frame.width, height: 100))
                     titleLabel.textAlignment = .center
                     titleLabel.font = UIFont(name: "Avenir-Heavy", size: 60)
-                    titleLabel.text = result
+                    titleLabel.text = result.itemName
                     imageView.addSubview(titleLabel)
                     let texture = UIImage.imageWithView(view: imageView)
-                    
+
                     let infoNode = SCNNode()
                     let infoGeometry = SCNPlane(width: 0.09, height: 0.13)
                     infoGeometry.firstMaterial?.diffuse.contents = texture

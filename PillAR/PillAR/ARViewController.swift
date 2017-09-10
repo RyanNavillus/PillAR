@@ -130,13 +130,20 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
 
         for result in cardHitTestResults {
             if cardButtons.contains(result.node) {
-                
+                guard let components = result.node.name?.components(separatedBy: "C==3") else {
+                    print("Malformed node name")
+                    continue
+                }
+                print("PLUS ONE MOTHERFUCKER")
+                DataManager.shared().addPillHistory(drugName: components[0], maxDailyDosage: Int(components[1])!)
+                return
             }
             if medicineCards.contains(result.node) {
                 //remove all nodes, parents and children
                 result.node.parent?.removeFromParentNode()
                 cardButtons.remove(at: medicineCards.index(of: result.node)!)
                 medicineCards.remove(at: medicineCards.index(of: result.node)!)
+                return
             }
         }
         
@@ -247,6 +254,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
                     //                    imageView.addSubview(takePillButton)
                     
                     let buttonNode = self.createButton(size: CGSize(width: imageView.frame.width - 128, height: 84))
+                    buttonNode.name = result.itemName + "C==3\(result.maximum)"
                     self.cardButtons.append(buttonNode)
                     
                     let texture = UIImage.imageWithView(view: imageView)

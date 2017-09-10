@@ -9,9 +9,6 @@
 import UIKit
 
 class AllHistoryViewController: UIViewController {
-    
-    var historyDosages = Array<HistoryData>()
-    
 
     
     @IBOutlet weak var tableView: UITableView!
@@ -22,14 +19,6 @@ class AllHistoryViewController: UIViewController {
         tableView.dataSource = self
         tableView.separatorStyle = .none
         
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MM-dd-yyyy HH:mm:ss zzz"
-        
-        //TODO: - add more mock data for history
-        historyDosages.append(HistoryData(drugName: "Zyrtec", maxDailyDosage: 5, takenToday: 0, timeTaken: dateFormatter.date(from: "09-09-2017 2:15:11 EST")!))
-        historyDosages.append(HistoryData(drugName: "Zyrtec", maxDailyDosage: 5, takenToday: 0, timeTaken: dateFormatter.date(from: "09-09-2017 2:15:11 EST")!))
-        historyDosages.append(HistoryData(drugName: "Zyrtec", maxDailyDosage: 5, takenToday: 0, timeTaken: dateFormatter.date(from: "09-09-2017 2:15:11 EST")!))
-        historyDosages.append(HistoryData(drugName: "Zyrtec", maxDailyDosage: 5, takenToday: 0, timeTaken: dateFormatter.date(from: "09-09-2017 8:15:11 EST")!))
         
         // Do any additional setup after loading the view.
         self.view.backgroundColor = UIColor(red: 0.961, green: 0.965, blue: 0.976, alpha: 1.00)
@@ -47,14 +36,14 @@ extension AllHistoryViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return historyDosages.count
+        return DataManager.shared().pillHistoryData.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "HistoryCell", for: indexPath) as? HistoryTableViewCell{
             cell.backgroundColor = nil
             cell.selectionStyle = .none
-            let data = historyDosages[indexPath.row]
+            let data = DataManager.shared().pillHistoryData[indexPath.row]
             cell.drugNameLabel.text = data.drugName
             
             let dateformatter = DateFormatter()
@@ -77,6 +66,9 @@ extension AllHistoryViewController: UITableViewDelegate, UITableViewDataSource {
             }else if data.takenToday > data.maxDailyDosage{
                 let numberToTake = data.takenToday - data.maxDailyDosage
                 cell.actionLabel.text = "YOU TOOK \(numberToTake) TOO MANY TODAY"
+            }
+            if data.actionStatement != ""{
+                cell.actionLabel.text = data.actionStatement
             }
             return cell
         }else{

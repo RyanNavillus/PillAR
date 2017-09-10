@@ -21,25 +21,27 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
     let bubbleDepth : Float = 0.01 // the 'depth' of 3D text
     var latestPrediction : String = "" // a variable containing the latest CoreML prediction
     
-    var historyState:HistoryVisible = .Hidden
-    var historyYOffset:CGFloat = 170
+    
+    var historyYOffset:CGFloat = 165
     
     var tapGesture = UITapGestureRecognizer()
-    
+    var panGesture = UIPanGestureRecognizer()
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         sceneView.delegate = self
         sceneView.showsStatistics = true
         let scene = SCNScene()
         sceneView.scene = scene
         sceneView.autoenablesDefaultLighting = true
-
+        
         tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(gestureRecognize:)))
         tapGesture.delegate = self
         view.addGestureRecognizer(tapGesture)
+        
+        
         
         if let mainHistoryVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MainHistoryVC") as? MainHistoryViewController{
             self.mainHistoryVC = mainHistoryVC
@@ -48,7 +50,12 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
             self.addChildViewController(mainHistoryVC)
             self.view.addSubview(mainHistoryVC.view)
             mainHistoryVC.didMove(toParentViewController: self)
+            panGesture = UIPanGestureRecognizer(target: self, action: #selector(ARViewController.handlePanGesture(_:)))
+            mainHistoryVC.topSharedView.addGestureRecognizer(panGesture)
             
+            NotificationCenter.default.addObserver(forName: toggleHistoryActionNotification, object: nil, queue: nil, using: { (notification) in
+                self.toggleState()
+            })
         }
     }
     
@@ -143,7 +150,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
                     // Save photo failed with no error
                 }
             })
-
+            
             print("Sending Image")
             if fetchingResults == true{
                 return
@@ -232,7 +239,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
                     textNode.addChildNode(node)
                     textNode.addChildNode(infoNode)
                     textNode.constraints = [billboardConstraint]
-
+                    
                 }
             })
         }
@@ -293,6 +300,35 @@ extension ARViewController: UIGestureRecognizerDelegate{
         return true
     }
     
+    func handlePanGesture(_ recognizer: UIPanGestureRecognizer){
+        if let mainHistoryVC = self.mainHistoryVC{
+            switch recognizer.state {
+            case .began:
+                print("Began sliding VC")
+            case .changed:
+                let translation = recognizer.translation(in: view).y
+                mainHistoryVC.view.center.y += translation
+                recognizer.setTranslation(CGPoint.zero, in: view)
+            case .ended:
+                if abs(recognizer.velocity(in: view).y) > 200{
+                    if recognizer.velocity(in: view).y < -200{
+                        toggle(state: .Visible)
+                    }else if recognizer.velocity(in: view).y > 200{
+                        toggle(state: .Hidden)
+                    }
+                }else{
+                    if mainHistoryVC.view.center.y > self.view.frame.height / 2.0{
+                        toggle(state: .Hidden)
+                    }else{
+                        toggle(state: .Visible)
+                    }
+                }
+            default:
+                break
+            }
+        }
+    }
+    
 }
 
 enum HistoryVisible {
@@ -304,10 +340,28 @@ enum HistoryVisible {
 extension ARViewController {
     
     func toggle(state: HistoryVisible){
-        if state != self.historyState {
+        if state != DataManager.shared().historyState, let mainHistoryVC = self.mainHistoryVC {
             print("Animating History State Change")
+            UIView.animate(withDuration: 1.0, delay: 0.0, usingSpringWithDamping: 0.9, initialSpringVelocity: 5.0, options: .curveEaseOut, animations: {
+                
+                if state == .Visible{
+                    mainHistoryVC.view.frame = UIScreen.main.bounds
+                }else if state == .Hidden{
+                    mainHistoryVC.view.frame.origin.y = self.view.frame.height - self.historyYOffset
+                }
+            }, completion:{ (finished) in
+                NotificationCenter.default.post(name: toggleHistoryNotification, object: nil)
+            })
+            DataManager.shared().historyState = state
             
-            
+        }
+    }
+    
+    func toggleState(){
+        if DataManager.shared().historyState == .Visible{
+            toggle(state: .Hidden)
+        }else{
+            toggle(state: .Visible)
         }
     }
     

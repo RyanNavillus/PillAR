@@ -10,9 +10,9 @@ dosageHeadings = ["Adult:", "Adults and Children:"]
 @app.route("/medication/<medication>")
 def getMedicationInfo(medication):
 
-    medication.replace(' ', '-')
-    medication.replace('%20', '-')
-    
+    medication.split(' ').join('-')
+    medication.split('%20').join('-')
+
     url="http://www.empr.com/search/%s/"
     url=url%(medication)
     request = urllib2.urlopen(url)

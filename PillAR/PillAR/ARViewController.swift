@@ -27,6 +27,10 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
     var panGesture = UIPanGestureRecognizer()
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
+    var medicineCards: [SCNNode] = []
+    
+    var cardButtons: [SCNNode] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -118,6 +122,25 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
     @objc func handleTap(gestureRecognize: UITapGestureRecognizer) {
         
         print("Screen Hit")
+        let cardHitTestResults = sceneView.hitTest(gestureRecognize.location(in: sceneView), options: nil)
+
+        for result in cardHitTestResults {
+            if cardButtons.contains(result.node) {
+                guard let components = result.node.name?.components(separatedBy: "C==3") else {
+                    print("Malformed node name")
+                    continue
+                }
+                DataManager.shared().addPillHistory(drugName: components[0], maxDailyDosage: Int(components[1])!)
+                return
+            }
+            if medicineCards.contains(result.node) {
+                //remove all nodes, parents and children
+                result.node.parent?.removeFromParentNode()
+                cardButtons.remove(at: medicineCards.index(of: result.node)!)
+                medicineCards.remove(at: medicineCards.index(of: result.node)!)
+                return
+            }
+        }
         
         let screenCentre : CGPoint = CGPoint(x: self.sceneView.bounds.midX, y: self.sceneView.bounds.midY)
         
@@ -128,7 +151,6 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
             let transform : matrix_float4x4 = closestResult.worldTransform
             //sceneView.session.add(anchor: ARAnchor(transform: transform))
             let worldCoord = SCNVector3Make(transform.columns.3.x, transform.columns.3.y, transform.columns.3.z)
-            
             let pixbuff : CVPixelBuffer? = (sceneView.session.currentFrame?.capturedImage)
             if pixbuff == nil { return }
             let ciImage = CIImage(cvPixelBuffer: pixbuff!)
@@ -153,10 +175,11 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
             print("Sending Image")
             if fetchingResults == true{
                 return
-            }else{
+            } else {
                 fetchingResults = true
                 activityIndicator.startAnimating()
             }
+            
             GoogleAPIManager.shared().identifyDrug(image: image, completionHandler: { (result) in
                 self.fetchingResults = false
                 self.activityIndicator.stopAnimating()
@@ -226,6 +249,8 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
                     //                    imageView.addSubview(takePillButton)
                     
                     let buttonNode = self.createButton(size: CGSize(width: imageView.frame.width - 128, height: 84))
+                    buttonNode.name = result.itemName + "C==3\(result.maximum)"
+                    self.cardButtons.append(buttonNode)
                     
                     let texture = UIImage.imageWithView(view: imageView)
                     
@@ -243,6 +268,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
                     buttonNode.position = infoNode.position
                     buttonNode.position.y -= (0.125)
                     textNode.constraints = [billboardConstraint]
+                    self.medicineCards.append(infoNode)
                 }
             })
         }

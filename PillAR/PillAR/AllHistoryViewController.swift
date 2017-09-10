@@ -56,7 +56,7 @@ extension AllHistoryViewController: UITableViewDelegate, UITableViewDataSource {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "MM-dd-yyyy HH:mm:ss zzz"
             
-            cell.detailTimeTakenLabel.text = timestringFrom(date: data.timeTaken)
+            cell.detailTimeTakenLabel.text =  data.timeTaken.timestringFromNow()
             cell.descriptionLabel.text = "\(data.takenToday) / \(data.maxDailyDosage) pills taken today"
             if data.takenToday < data.maxDailyDosage{
                 let numberToTake = data.maxDailyDosage - data.takenToday
@@ -76,22 +76,18 @@ extension AllHistoryViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    func timestringFrom(date:Date)-> String{
-        let now = Date()
-        if now.days(from: date) > 0 {
-            return "\(now.days(from: date)) days ago"
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let data = DataManager.shared().pillHistoryData[indexPath.row]
+        if let singlePillVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SinglePillVC") as? SinglePillViewController{
+            singlePillVC.view.frame = UIScreen.main.bounds
+           singlePillVC.drugTitleLabel.text = data.drugName.capitalized
+            
+            
+           self.present(singlePillVC, animated: true, completion: nil)
         }
-        if now.hours(from: date) > 0 {
-            return "\(now.hours(from: date)) hours ago"
-        }
-        if now.minutes(from: date) > 0 {
-            return "\(now.minutes(from: date)) minutes ago"
-        }
-        if now.seconds(from: date) > 0 {
-            return "\(now.seconds(from: date)) days ago"
-        }
-        return ""
     }
+    
     
 }
 
@@ -114,6 +110,24 @@ extension Date {
     /// Returns the amount of seconds from another date
     func seconds(from date: Date) -> Int {
         return Calendar.current.dateComponents([.second], from: date, to: self).second ?? 0
+    }
+    
+    
+    func timestringFromNow()-> String{
+        let now = Date()
+        if now.days(from: self) > 0 {
+            return "\(now.days(from: self)) days ago"
+        }
+        if now.hours(from: self) > 0 {
+            return "\(now.hours(from: self)) hours ago"
+        }
+        if now.minutes(from: self) > 0 {
+            return "\(now.minutes(from: self)) minutes ago"
+        }
+        if now.seconds(from: self) > 0 {
+            return "\(now.seconds(from: self)) days ago"
+        }
+        return ""
     }
 }
 

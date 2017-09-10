@@ -16,6 +16,8 @@
 		3B17CD2C1F639FDA0011CE7E /* GoogleAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B17CD2B1F639FDA0011CE7E /* GoogleAPIManager.swift */; };
 		3BF8F2771F6490880042636F /* HasuraAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF8F2761F6490880042636F /* HasuraAPIManager.swift */; };
 		891AB7909DF442F2E8BD903B /* Pods_PillAR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32A29F1294CFAA34F2368B18 /* Pods_PillAR.framework */; };
+		BB1317431F64D8140004BF4F /* SinglePillViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1317421F64D8140004BF4F /* SinglePillViewController.swift */; };
+		BB1317451F64DCAA0004BF4F /* SingleHistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1317441F64DCAA0004BF4F /* SingleHistoryTableViewCell.swift */; };
 		BB232D181F6470D600362F0B /* HistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB232D171F6470D600362F0B /* HistoryTableViewCell.swift */; };
 		BB232D1A1F6470E400362F0B /* HistoryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB232D191F6470E400362F0B /* HistoryData.swift */; };
 		BB232D1C1F64D0E800362F0B /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB232D1B1F64D0E800362F0B /* DataManager.swift */; };
@@ -37,6 +39,8 @@
 		3B17CD2B1F639FDA0011CE7E /* GoogleAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleAPIManager.swift; sourceTree = "<group>"; };
 		3BF8F2761F6490880042636F /* HasuraAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HasuraAPIManager.swift; sourceTree = "<group>"; };
 		B7AA8AB37CD8AA8D850B546F /* Pods-PillAR.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PillAR.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PillAR/Pods-PillAR.debug.xcconfig"; sourceTree = "<group>"; };
+		BB1317421F64D8140004BF4F /* SinglePillViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SinglePillViewController.swift; sourceTree = "<group>"; };
+		BB1317441F64DCAA0004BF4F /* SingleHistoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleHistoryTableViewCell.swift; sourceTree = "<group>"; };
 		BB232D171F6470D600362F0B /* HistoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryTableViewCell.swift; sourceTree = "<group>"; };
 		BB232D191F6470E400362F0B /* HistoryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryData.swift; sourceTree = "<group>"; };
 		BB232D1B1F64D0E800362F0B /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
@@ -94,6 +98,8 @@
 				BB232D1B1F64D0E800362F0B /* DataManager.swift */,
 				BB260F6C1F63C5AC006743ED /* ARViewController.swift */,
 				3B17CD1A1F639DB90011CE7E /* Main.storyboard */,
+				BB1317441F64DCAA0004BF4F /* SingleHistoryTableViewCell.swift */,
+				BB1317421F64D8140004BF4F /* SinglePillViewController.swift */,
 				BB232D171F6470D600362F0B /* HistoryTableViewCell.swift */,
 				BB232D191F6470E400362F0B /* HistoryData.swift */,
 				BB904DBD1F646C84004C545D /* AllHistoryViewController.swift */,
@@ -254,8 +260,10 @@
 				3BF8F2771F6490880042636F /* HasuraAPIManager.swift in Sources */,
 				3B17CD2C1F639FDA0011CE7E /* GoogleAPIManager.swift in Sources */,
 				BB232D1C1F64D0E800362F0B /* DataManager.swift in Sources */,
+				BB1317451F64DCAA0004BF4F /* SingleHistoryTableViewCell.swift in Sources */,
 				BB260F6D1F63C5AC006743ED /* ARViewController.swift in Sources */,
 				BB232D1A1F6470E400362F0B /* HistoryData.swift in Sources */,
+				BB1317431F64D8140004BF4F /* SinglePillViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

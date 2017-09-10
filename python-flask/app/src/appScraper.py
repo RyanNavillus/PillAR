@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 import re, requests
 
 dosageHeadings = ["Adult:", "Adults and Children:"]
-listToIgnore = ["plastic-bottle", "bottle", "drink", "liquid", "orange-drink", "orange-soft-drink", "lotion", "tablet", "nail", "flavor", "font"]
+listToIgnore = ["plastic-bottle", "bottle", "drink", "liquid", "orange-drink", "orange-soft-drink", "lotion", "tablet", "nail", "flavor", "font", "food-additive", "human-leg"]
 @app.route("/")
 @app.route("/medication/<medication>")
 def getMedicationInfo(medication):

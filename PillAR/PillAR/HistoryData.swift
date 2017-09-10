@@ -23,14 +23,14 @@ class HistoryData: NSObject {
         self.takenToday = todayDose
         self.actionStatement = actionStatement
         if calculateTodayDose{
-            calculateTakenToday()
+            self.takenToday = HistoryData.calculateTakenToday(drugName: self.drugName) + 1
         }
     }
     
-    func calculateTakenToday(){
+    static func calculateTakenToday(drugName: String) -> Int{
         var similarPills = [HistoryData]()
         for pill in DataManager.shared().pillHistoryData {
-            if pill.drugName.lowercased() == self.drugName.lowercased(){
+            if pill.drugName.lowercased() == drugName.lowercased(){
                 similarPills.append(pill)
             }
         }
@@ -43,8 +43,7 @@ class HistoryData: NSObject {
                 sameDay += 1
             }
         }
-        self.takenToday = sameDay + 1
-        
+        return sameDay
     }
     
     func toDictionary()->[String:Any]{

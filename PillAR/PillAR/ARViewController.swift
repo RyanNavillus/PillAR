@@ -40,10 +40,6 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
         tapGesture.delegate = self
         view.addGestureRecognizer(tapGesture)
         
-//        HasuraAPIManager.shared().getLogoForDrug(drug: "Advil") { (image) in
-//            print("Returned")
-//        }
-        self.delay(0.1) {
             
         if let mainHistoryVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MainHistoryVC") as? MainHistoryViewController{
             self.mainHistoryVC = mainHistoryVC
@@ -59,7 +55,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
                 self.toggleState()
             })
         }
-        }
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -27,9 +27,10 @@ class HasuraAPIManager {
     }
     
     func getUsageForDrug(_ drug: String, completionHandler: @escaping (((instructions: String,maximumDose: Int)?) ->())) {
-        
+        print("Getting usages for \(drug)")
         if  DataManager.shared().drugUsageCache[drug.lowercased()] != nil {
-            let cachedResult = DataManager.shared().drugUsageCache[drug]
+            print("Cache Hit !!!!!")
+            let cachedResult = DataManager.shared().drugUsageCache[drug.lowercased()]
             completionHandler(cachedResult)
             return
         }

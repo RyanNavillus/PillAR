@@ -25,6 +25,7 @@
 		BB260F6D1F63C5AC006743ED /* ARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB260F6C1F63C5AC006743ED /* ARViewController.swift */; };
 		BB904DBE1F646C84004C545D /* AllHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB904DBD1F646C84004C545D /* AllHistoryViewController.swift */; };
 		BB904DC01F646C8C004C545D /* PillListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB904DBF1F646C8C004C545D /* PillListViewController.swift */; };
+		BBD3E59D1F6528B2003E9982 /* AllPillListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD3E59C1F6528B2003E9982 /* AllPillListTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +50,7 @@
 		BB260F6C1F63C5AC006743ED /* ARViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewController.swift; sourceTree = "<group>"; };
 		BB904DBD1F646C84004C545D /* AllHistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllHistoryViewController.swift; sourceTree = "<group>"; };
 		BB904DBF1F646C8C004C545D /* PillListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillListViewController.swift; sourceTree = "<group>"; };
+		BBD3E59C1F6528B2003E9982 /* AllPillListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllPillListTableViewCell.swift; sourceTree = "<group>"; };
 		FA263594C2CDDDEB8526C0FD /* Pods-PillAR.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PillAR.release.xcconfig"; path = "Pods/Target Support Files/Pods-PillAR/Pods-PillAR.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -101,6 +103,7 @@
 				BB260F6C1F63C5AC006743ED /* ARViewController.swift */,
 				BB1317461F64E8DF0004BF4F /* Extensions.swift */,
 				3B17CD1A1F639DB90011CE7E /* Main.storyboard */,
+				BBD3E59C1F6528B2003E9982 /* AllPillListTableViewCell.swift */,
 				BB1317441F64DCAA0004BF4F /* SingleHistoryTableViewCell.swift */,
 				BB1317421F64D8140004BF4F /* SinglePillViewController.swift */,
 				BB232D171F6470D600362F0B /* HistoryTableViewCell.swift */,
@@ -267,6 +270,7 @@
 				BB260F6D1F63C5AC006743ED /* ARViewController.swift in Sources */,
 				BB232D1A1F6470E400362F0B /* HistoryData.swift in Sources */,
 				BB1317431F64D8140004BF4F /* SinglePillViewController.swift in Sources */,
+				BBD3E59D1F6528B2003E9982 /* AllPillListTableViewCell.swift in Sources */,
 				BB1317471F64E8DF0004BF4F /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

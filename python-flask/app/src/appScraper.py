@@ -74,12 +74,14 @@ def getMedicationInfo(medication):
 
 @app.route("/logo/<medication>")
 def getLogo(medication):
-    url = "https://api.cognitive.microsoft.com/bing/v5.0/images"
+    url = "https://api.cognitive.microsoft.com/bing/v5.0/images/search"
     medication += " logos"
-    payload = {'q': medication}
+    payload = {'q': str(medication)}
     headers = {'Ocp-Apim-Subscription-Key': 'c27264578ba449bcbca148baa3466b9e'}
     r = requests.get(url, params=payload, headers=headers)
-    return r.json()
+    imgURL = r['value'][0]['contentUrl']
+    imgURLJSON = {'url': imgURL}
+    return json.dumps(imgURLJSON)
 
 # Returns an integer number of pills needed daily given json input
 def findMax(text):

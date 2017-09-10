@@ -39,7 +39,7 @@ def getMedicationInfo(medication):
             return json.dumps({'error':'try again'})
 
         # medicationURL = searchResultList[0]
-        medicationURL = searchResultList[0]
+        medicationURL = searchResultURL
 
         request1 = urllib2.urlopen(medicationURL)
         result1 = request1.read()

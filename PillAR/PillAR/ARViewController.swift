@@ -47,6 +47,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
 //        HasuraAPIManager.shared().getLogoForDrug(drug: "Advil") { (image) in
 //            print("Returned")
 //        }
+        
         self.delay(0.1) {
             
         if let mainHistoryVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MainHistoryVC") as? MainHistoryViewController{
@@ -139,10 +140,22 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
             }
             if medicineCards.contains(result.node) {
                 //remove all nodes, parents and children
-                result.node.parent?.removeFromParentNode()
-                cardButtons.remove(at: medicineCards.index(of: result.node)!)
-                medicineCards.remove(at: medicineCards.index(of: result.node)!)
+                result.node.parent?.childNodes[0].runAction(SCNAction.scale(to: 0.0, duration: 0.3) )
+                result.node.runAction(SCNAction.scale(to: 0.0, duration: 0.3) )
+                result.node.parent?.childNodes[0].runAction(SCNAction.fadeOpacity(to: 0.0, duration: 0.3) )
+                result.node.runAction(SCNAction.fadeOpacity(to: 0.0, duration: 0.3) )
+
+                result.node.runAction(SCNAction.wait(duration: 0.5), completionHandler: {
+                        result.node.parent?.removeFromParentNode()
+                        self.cardButtons.remove(at: self.medicineCards.index(of: result.node)!)
+                        self.medicineCards.remove(at: self.medicineCards.index(of: result.node)!)
+                })
                 return
+            }
+            for node in medicineCards {
+                if result.node == node.parent {
+                    return
+                }
             }
         }
         
@@ -188,10 +201,28 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
                 self.fetchingResults = false
                 self.activityIndicator.stopAnimating()
                 if let result = result {
+                    
+                    var pillsTakenToday = 0
+                    var lastTakenTime = Date(timeIntervalSince1970: 0)
+                    var actionStatement = ""
+                    for pill in DataManager.shared().pillHistoryData {
+                        if pill.drugName == result.itemName {
+                            if lastTakenTime.timeIntervalSince1970 == 0 {
+                                actionStatement = pill.actionStatement
+                                lastTakenTime = pill.timeTaken
+                            }
+                            if pill.timeTaken.daysBetweenDate(toDate: Date()) == 0 {
+                                pillsTakenToday += 1
+                            }
+                        }
+                    }
+
                     let billboardConstraint = SCNBillboardConstraint()
                     billboardConstraint.freeAxes = SCNBillboardAxis.Y
                     
                     let textNode = SCNNode()
+                    textNode.scale = SCNVector3(x: 0.1, y: 0.1, z: 0.1)
+                    textNode.opacity = 0.0
                     self.sceneView.scene.rootNode.addChildNode(textNode)
                     textNode.position = worldCoord
                     let backNode = SCNNode()
@@ -222,15 +253,17 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
                     lastTakenLabel.textAlignment = .left
                     lastTakenLabel.numberOfLines = 1
                     lastTakenLabel.font = UIFont(name: "Avenir-HeavyOblique", size: 42)
-                    lastTakenLabel.text = "Last taken XX hours ago"
+                    lastTakenLabel.text = "Last taken \(Date().hours(from: lastTakenTime)) hours ago"
                     lastTakenLabel.backgroundColor = .clear
-                    imageView.addSubview(lastTakenLabel)
+                    if lastTakenTime.timeIntervalSince1970 != 0 {
+                        imageView.addSubview(lastTakenLabel)
+                    }
                     
                     let limitLabel = UILabel(frame: CGRect(x: 64, y: 286, width: imageView.frame.width-128, height: 63))
                     limitLabel.textAlignment = .center
                     limitLabel.numberOfLines = 1
                     limitLabel.font = UIFont(name: "Avenir", size: 63)
-                    limitLabel.text = "X pills taken / \(result.maximum) limit"
+                    limitLabel.text = "\(pillsTakenToday) pills taken \(result.maximum) limit"
                     limitLabel.backgroundColor = .clear
                     imageView.addSubview(limitLabel)
                     
@@ -241,16 +274,9 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
                     refillLabel.text = "REFILL SOON"
                     refillLabel.backgroundColor = .clear
                     refillLabel.textColor = .red
-                    imageView.addSubview(refillLabel)
-                    
-                    //                    let takePillButton = UIButton(frame: CGRect(x: 64, y: 491, width: imageView.frame.width-128, height: 84))
-                    //                    takePillButton.titleLabel?.textAlignment = .center
-                    //                    takePillButton.titleLabel?.numberOfLines = 1
-                    //                    takePillButton.titleLabel?.font = UIFont(name: "Avenir", size: 42)
-                    //                    takePillButton.setTitle("MARK AS TAKEN", for: .normal)
-                    //                    takePillButton.backgroundColor =  UIColor(red: 96/255, green: 143/255, blue: 238/255, alpha: 1.0) /* #608fee */
-                    //                    takePillButton.setTitleColor(.white, for: .normal)
-                    //                    imageView.addSubview(takePillButton)
+                    if actionStatement == "YOU MAY NEED TO REFILL SOON" {
+                        imageView.addSubview(refillLabel)
+                    }
                     
                     let buttonNode = self.createButton(size: CGSize(width: imageView.frame.width - 128, height: 84))
                     buttonNode.name = result.itemName + "C==3\(result.maximum)"
@@ -272,6 +298,22 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
                     buttonNode.position = infoNode.position
                     buttonNode.position.y -= (0.125)
                     textNode.constraints = [billboardConstraint]
+                    textNode.runAction(SCNAction.scale(to: 0.0, duration: 0) )
+                    backNode.runAction(SCNAction.scale(to: 0.0, duration: 0))
+                    infoNode.runAction(SCNAction.scale(to: 0.0, duration: 0) )
+                    textNode.runAction(SCNAction.fadeOpacity(to: 0.0, duration: 0))
+                    backNode.runAction(SCNAction.fadeOpacity(to: 0.0, duration: 0))
+                    infoNode.runAction(SCNAction.fadeOpacity(to: 0.0, duration: 0))
+
+                    textNode.runAction(SCNAction.wait(duration: 0.01))
+                    backNode.runAction(SCNAction.wait(duration: 0.01))
+                    infoNode.runAction(SCNAction.wait(duration: 0.01))
+                    textNode.runAction(SCNAction.scale(to: 1.0, duration: 0.3) )
+                    backNode.runAction(SCNAction.scale(to: 1.0, duration: 0.3) )
+                    infoNode.runAction(SCNAction.scale(to: 1.0, duration: 0.3) )
+                    textNode.runAction(SCNAction.fadeOpacity(to: 1.0, duration: 0.3))
+                    backNode.runAction(SCNAction.fadeOpacity(to: 1.0, duration: 0.3))
+                    infoNode.runAction(SCNAction.fadeOpacity(to: 1.0, duration: 0.3))
                     self.medicineCards.append(infoNode)
                 }
             })

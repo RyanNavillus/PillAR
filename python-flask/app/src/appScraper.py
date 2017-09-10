@@ -5,10 +5,15 @@ from bs4 import BeautifulSoup
 import re, requests
 
 dosageHeadings = ["Adult:", "Adults and Children:"]
-
+listToIgnore = ["plastic-bottle", "bottle", "drink", "liquid", "orange-drink", "orange-soft-drink", "lotion", "tablet", "nail", "flavor", "font"]
 @app.route("/")
 @app.route("/medication/<medication>")
 def getMedicationInfo(medication):
+
+    medication.lower()
+
+    if medication in listToIgnore:
+        return json.dumps({'error':'try again'})
 
     url="http://www.empr.com/search/%s/"
     url=url%(medication)

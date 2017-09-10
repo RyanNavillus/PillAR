@@ -22,10 +22,22 @@ def getMedicationInfo(medication):
         return json.dumps({'error':'try again'})
     else:
         searchResults = soup.find_all('h1')
-        searchResultList = []
+        #searchResultList = []
+        searchResultCategory = ""
+
         for i in searchResults:
             if i.a.get('href'):
-                searchResultList.append(str(i.a.get('href')))
+                #searchResultList.append(str(i.a.get('href')))
+                searchResultURL = str(i.a.get('href'))
+                searchResultCategory = str(i.find_next('div', class_='category').get_text())
+                break
+
+
+        if "Drug Monograph" not in searchResultCategory:
+            if 'alka' in medication:
+                return json.dumps({'instructions': "Fully chew then swallow 1-2 chewable tablets as symptoms occur. Do not take more than 5 chewable tablets in a 24-hour period", "maximum": 5})
+            else:
+                return json.dumps({'error':'try again'})
 
         # medicationURL = searchResultList[0]
         medicationURL = searchResultList[0]
@@ -34,11 +46,7 @@ def getMedicationInfo(medication):
         result1 = request1.read()
         soup1 = BeautifulSoup(result1, 'html.parser')
 
-        if not soup1.find('section', class_='drug-monograph-section'):
-            if 'alka' in medication:
-                return json.dumps({'instructions': "Fully chew then swallow 1-2 chewable tablets as symptoms occur. Do not take more than 5 chewable tablets in a 24-hour period", "maximum": 5})
-            else:
-                return json.dumps({'error':'try again'})
+        
 
         # if 'tylenol' in medication:
         #     return json.dumps({'instructions': ""})

@@ -346,18 +346,28 @@
                                     <constraint firstAttribute="width" constant="40" id="lLm-sv-J70"/>
                                 </constraints>
                             </imageView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="V0v-uY-3R2">
+                                <rect key="frame" x="367.5" y="506.5" width="100" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="HBd-RM-6gZ"/>
+                                    <constraint firstAttribute="width" constant="100" id="YlV-gO-HkF"/>
+                                </constraints>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="VPp-vz-MtS" firstAttribute="height" secondItem="abq-ig-XAA" secondAttribute="height" id="CU8-0K-Mc5"/>
+                            <constraint firstItem="V0v-uY-3R2" firstAttribute="centerX" secondItem="abq-ig-XAA" secondAttribute="centerX" id="G8f-NR-tBw"/>
                             <constraint firstItem="VPp-vz-MtS" firstAttribute="centerY" secondItem="abq-ig-XAA" secondAttribute="centerY" id="GAC-4I-Etf"/>
                             <constraint firstItem="Hbn-Hy-JNi" firstAttribute="centerY" secondItem="VPp-vz-MtS" secondAttribute="centerY" id="X5e-k7-S1W"/>
                             <constraint firstItem="VPp-vz-MtS" firstAttribute="width" secondItem="abq-ig-XAA" secondAttribute="width" id="XHJ-L3-6Ht"/>
+                            <constraint firstItem="V0v-uY-3R2" firstAttribute="centerY" secondItem="abq-ig-XAA" secondAttribute="centerY" id="dpm-62-s8e"/>
                             <constraint firstItem="Hbn-Hy-JNi" firstAttribute="centerX" secondItem="VPp-vz-MtS" secondAttribute="centerX" id="eZz-mm-1u6"/>
                             <constraint firstItem="VPp-vz-MtS" firstAttribute="centerX" secondItem="abq-ig-XAA" secondAttribute="centerX" id="mPM-gm-1qg"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="V0v-uY-3R2" id="0rr-LA-TFJ"/>
                         <outlet property="sceneView" destination="VPp-vz-MtS" id="QZd-1S-eyB"/>
                     </connections>
                 </viewController>

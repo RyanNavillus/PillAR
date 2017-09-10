@@ -28,12 +28,12 @@ class GoogleAPIManager {
         return sharedInstance
     }
     
-    func identifyDrug(image: UIImage, completionHandler: @escaping ((String?) -> ())) {
+    func identifyDrug(image: UIImage, completionHandler:@escaping (((itemName: String, instructions: String, maximum: Int)?) -> ())) {
         // Base64 encode the image and create the request
         let binaryImagePacket = base64EncodeImage(image)
         
         //FIX ME
-        //createRequest(with: binaryImagePacket, completionHandler: completionHandler)
+        createRequest(with: binaryImagePacket, completionHandler: completionHandler)
     }
     
     func resizeImage(_ imageSize: CGSize, image: UIImage) -> Data {
@@ -58,7 +58,7 @@ class GoogleAPIManager {
         return (imagedata.base64EncodedString(options: .endLineWithCarriageReturn), image.size)
     }
     
-    func createRequest(with imageBase64: (String, CGSize), completionHandler: @escaping (((String, Int, Int, Int)) -> ())) {
+    func createRequest(with imageBase64: (String, CGSize), completionHandler: @escaping (((itemName: String, instructions: String, maximum: Int)?) -> ())) {
         // Create our request URL
         
         var request = URLRequest(url: googleURL)
@@ -110,7 +110,7 @@ class GoogleAPIManager {
                     if (errorObj.dictionaryValue != [:]) {
                         print("Error code \(errorObj["code"]): \(errorObj["message"])")
                     }
-                    print(json)
+//                    print(json)
                     var responses: [String] = []
                     if let logoResults = json["responses"][0]["logoAnnotations"].array, logoResults.count > 0 {
                         for item in logoResults{
@@ -128,26 +128,41 @@ class GoogleAPIManager {
                         }
                     }
                     let apiManager = HasuraAPIManager.shared()
-                    var completed = false
-                    
+                    var calls = 0
                     // Call hasura api for each result from Google
+                    print(responses)
+                    var lowestResponseNum = 1000
+                    var lowestResponse: (instructions: String, maximum: Int)? = nil
                     for response in responses {
+                        calls += 1
                         let handler = {
-                            (data: (frequency: Int, maximum: Int, dosage: Int)?) in
-                            
-                            if completed {
-                                return
+                            (data: (instructions: String, maximum: Int)?) in
+                            calls -= 1
+                            if data != nil{
+                                let responseIndex = responses.index(of: response)
+                                print("Response: \(responseIndex) \(response)")
+                                if responseIndex! <= lowestResponseNum{
+                                    lowestResponseNum = responseIndex!
+                                    lowestResponse = data
+                                }
                             }
-                            
-                            if let data = data {
-                                completed = true
-                                completionHandler((response, data.frequency, data.maximum, data.dosage))
+                            if calls == 0{
+                                if lowestResponseNum == 1000{
+                                    completionHandler(nil)
+                                }else{
+                                    print("FINAL RESULT")
+                                    print("\(responses[lowestResponseNum]), \nmax: \(lowestResponse!.maximum), \ninstructions: \(lowestResponse!.instructions)")
+                                    completionHandler((responses[lowestResponseNum], lowestResponse!.instructions, lowestResponse!.maximum))
+                                }
                             }
-                            
-                            //completionHandler(nil) if no data is valid
                         }
 
                         // For each item returned by Google, get its usage information
+//                        apiManager.getUsageForDrug("\(response)", completionHandler: { (response) in
+//                            if response != nil{
+//
+//                            }
+//                        })
                         apiManager.getUsageForDrug("\(response)", completionHandler: handler)
                     }
                 

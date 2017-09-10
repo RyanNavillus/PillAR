@@ -75,7 +75,10 @@ def getMedicationInfo(medication):
                   
             # medicationInfo['mg per pill regex'] = re.search(r'(?:\d*\.)?\d+mg', paragraphs[pIndex].get_text()).group()
             pIndex += 1
-
+        if medication == "Advil":
+            medicationInfo['maximum'] = 6
+        if medication == "Tums":
+            medicationInfo['maximum'] = 7
     #return newHTML
     #frequency, max, num of mg per pill
     return json.dumps(medicationInfo)

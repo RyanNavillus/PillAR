@@ -2,7 +2,7 @@ from src import app
 from flask import render_template
 import urllib2, json
 from bs4 import BeautifulSoup
-import re
+import re, requests
 
 dosageHeadings = ["Adult:", "Adults and Children:"]
 
@@ -74,14 +74,12 @@ def getMedicationInfo(medication):
 
 @app.route("/logo/<medication>")
 def getLogo(medication):
-    url="https://www.google.com/search?q=%s+logos"
-    url=url%(medication)
-    request = urllib2.urlopen(url)
-    result = request.read()
-    soup = BeautifulSoup(result, 'html.parser')
-    imgResult = soup.find('img', class_="irc_mi")
-    imgURL = imgResult.['src']
-    return json.dumps({'url' : imgURL})
+    url = "https://api.cognitive.microsoft.com/bing/v5.0/images"
+    medication += " logos"
+    payload = {'q': medication}
+    headers = {'Ocp-Apim-Subscription-Key': 'c27264578ba449bcbca148baa3466b9e'}
+    r = requests.get(url, params=payload, headers=headers)
+    return r.json()
 
 # Returns an integer number of pills needed daily given json input
 def findMax(text):

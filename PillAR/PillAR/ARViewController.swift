@@ -149,6 +149,8 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
                     plaque.firstMaterial?.diffuse.contents = UIColor(white: 1.0, alpha: 0.6)
                     node.geometry = plaque
                     node.position.y += 0.13
+                    
+                    //Set up card view
                     let imageView = UIView(frame: CGRect(x: 0, y: 0, width: 600, height: 800))
                     imageView.backgroundColor = UIColor.white
                     imageView.alpha = 0.8
@@ -169,6 +171,81 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
                     textNode.addChildNode(infoNode)
                 }
             })
+            
+            let textNode : SCNNode = SCNNode()
+            self.sceneView.scene.rootNode.addChildNode(textNode)
+            textNode.position = worldCoord
+            let node = SCNNode()
+            let plaque = SCNBox(width: 0.14, height: 0.1, length: 0.01, chamferRadius: 0.005)
+            plaque.firstMaterial?.diffuse.contents = UIColor(white: 1.0, alpha: 0.6)
+            node.geometry = plaque
+            node.position.y += 0.09
+            
+            //Set up card view
+            let imageView = UIView(frame: CGRect(x: 0, y: 0, width: 800, height: 600))
+            imageView.backgroundColor = .clear
+            imageView.alpha = 1.0
+            
+            let titleLabel = UILabel(frame: CGRect(x: 64, y: 64, width: imageView.frame.width-224, height: 84))
+            titleLabel.textAlignment = .left
+            titleLabel.numberOfLines = 1
+            titleLabel.font = UIFont(name: "Avenir", size: 84)
+            titleLabel.text = "Pepto-Bismol".capitalized
+            titleLabel.backgroundColor = .clear
+            imageView.addSubview(titleLabel)
+            
+            let circleLabel = UILabel(frame: CGRect(x: imageView.frame.width - 144, y: 48, width: 96, height: 96))
+            circleLabel.layer.cornerRadius = 48
+            circleLabel.clipsToBounds = true
+            circleLabel.backgroundColor = .red
+            imageView.addSubview(circleLabel)
+            
+            let lastTakenLabel = UILabel(frame: CGRect(x: 64, y: 180, width: imageView.frame.width-128, height: 42))
+            lastTakenLabel.textAlignment = .left
+            lastTakenLabel.numberOfLines = 1
+            lastTakenLabel.font = UIFont(name: "Avenir-HeavyOblique", size: 42)
+            lastTakenLabel.text = "Last taken 10 hours ago"
+            lastTakenLabel.backgroundColor = .clear
+            imageView.addSubview(lastTakenLabel)
+            
+            let limitLabel = UILabel(frame: CGRect(x: 64, y: 286, width: imageView.frame.width-128, height: 63))
+            limitLabel.textAlignment = .center
+            limitLabel.numberOfLines = 1
+            limitLabel.font = UIFont(name: "Avenir", size: 63)
+            limitLabel.text = "3 pills taken / 4 limit"
+            limitLabel.backgroundColor = .clear
+            imageView.addSubview(limitLabel)
+            
+            let refillLabel = UILabel(frame: CGRect(x: 64, y: 365, width: imageView.frame.width-128, height: 42))
+            refillLabel.textAlignment = .center
+            refillLabel.numberOfLines = 1
+            refillLabel.font = UIFont(name: "Avenir", size: 42)
+            refillLabel.text = "REFILL SOON"
+            refillLabel.backgroundColor = .clear
+            refillLabel.textColor = .red
+            imageView.addSubview(refillLabel)
+
+            let takePillButton = UIButton(frame: CGRect(x: 64, y: 491, width: imageView.frame.width-128, height: 84))
+            takePillButton.titleLabel?.textAlignment = .center
+            takePillButton.titleLabel?.numberOfLines = 1
+            takePillButton.titleLabel?.font = UIFont(name: "Avenir", size: 42)
+            takePillButton.setTitle("MARK AS TAKEN", for: .normal)
+            takePillButton.backgroundColor =  UIColor(red: 96/255, green: 143/255, blue: 238/255, alpha: 1.0) /* #608fee */
+            takePillButton.setTitleColor(.white, for: .normal)
+            imageView.addSubview(takePillButton)
+
+            
+            let texture = UIImage.imageWithView(view: imageView)
+            
+            let infoNode = SCNNode()
+            let infoGeometry = SCNPlane(width: 0.13, height: 0.09)
+            infoGeometry.firstMaterial?.diffuse.contents = texture
+            infoNode.geometry = infoGeometry
+            infoNode.position.y += 0.09
+            infoNode.position.z += 0.0054
+            textNode.addChildNode(node)
+            textNode.addChildNode(infoNode)
+
         }
     }
     
@@ -181,11 +258,11 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
         
         // BUBBLE-TEXT
         let bubble = SCNText(string: text, extrusionDepth: CGFloat(bubbleDepth))
-        var font = UIFont(name: "Futura", size: 0.15)
+        var font = UIFont(name: "Arial", size: 0.15)
         font = font?.withTraits(traits: .traitBold)
         bubble.font = font
         bubble.alignmentMode = kCAAlignmentCenter
-        bubble.firstMaterial?.diffuse.contents = UIColor.orange
+        bubble.firstMaterial?.diffuse.contents = UIColor(red: 96/255, green: 143/255, blue: 238/255, alpha: 1.0) /* #608fee */
         bubble.firstMaterial?.specular.contents = UIColor.white
         bubble.firstMaterial?.isDoubleSided = true
         // bubble.flatness // setting this too low can cause crashes.
@@ -307,7 +384,7 @@ extension UIImage {
 
 extension UIImage {
     class func imageWithView(view: UIView) -> UIImage {
-        UIGraphicsBeginImageContextWithOptions(view.bounds.size, view.isOpaque, 0.0)
+        UIGraphicsBeginImageContextWithOptions(view.bounds.size, false, 0.0)
         view.drawHierarchy(in: view.bounds, afterScreenUpdates: true)
         let img = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()

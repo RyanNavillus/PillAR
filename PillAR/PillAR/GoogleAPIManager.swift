@@ -144,7 +144,7 @@ class GoogleAPIManager {
                             if data != nil{
                                 let responseIndex = responses.index(of: response)
                                 print("Response: \(responseIndex) \(response)")
-                                if responseIndex! <= lowestResponseNum{
+                                if responseIndex! <= lowestResponseNum {
                                     lowestResponseNum = responseIndex!
                                     lowestResponse = data
                                 }

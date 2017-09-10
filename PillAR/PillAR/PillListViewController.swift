@@ -33,6 +33,9 @@ class PillListViewController: UIViewController {
 //            self.updateInfo()
 //        }
         self.updateInfo()
+         NotificationCenter.default.addObserver(forName: toggleHistoryNotification, object: nil, queue: nil) { (notification) in
+                self.updateInfo()
+        }
     }
     
     var pillInfo:[[String: Any]] = [[String: Any]]()
@@ -69,6 +72,12 @@ class PillListViewController: UIViewController {
             specificPillInfo[PillKeys.dailyDose] = minPill!.maxDailyDosage
             specificPillInfo[PillKeys.allTakenInstances] = pillList
             pillInfo.append(specificPillInfo)
+        }
+        pillInfo.sort { (a, b) -> Bool in
+            if let a_last = a[PillKeys.lastTaken] as? HistoryData, let b_last = b[PillKeys.lastTaken] as? HistoryData{
+                return a_last.timeTaken > b_last.timeTaken
+            }
+            return true
         }
     }
     

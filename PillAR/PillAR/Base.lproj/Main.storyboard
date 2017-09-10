@@ -242,7 +242,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Daily Dose:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g5U-HO-IEa">
-                                                            <rect key="frame" x="200" y="68" width="82" height="22"/>
+                                                            <rect key="frame" x="200" y="61" width="82" height="22"/>
                                                             <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="16"/>
                                                             <color key="textColor" red="0.33333333333333331" green="0.34901960784313724" blue="0.41960784313725491" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -263,7 +263,7 @@
                                                         <constraint firstItem="Y6w-jV-OlZ" firstAttribute="centerY" secondItem="jPh-Ig-efe" secondAttribute="centerY" id="TYf-Rn-AS3"/>
                                                         <constraint firstItem="oRc-4e-h8C" firstAttribute="leading" secondItem="yoo-5d-xGv" secondAttribute="trailing" constant="16" id="WGq-Kh-ogX"/>
                                                         <constraint firstItem="sDb-hg-teO" firstAttribute="height" secondItem="jPh-Ig-efe" secondAttribute="height" id="dBw-V0-rFq"/>
-                                                        <constraint firstItem="g5U-HO-IEa" firstAttribute="top" secondItem="yoo-5d-xGv" secondAttribute="bottom" constant="15" id="eI0-9v-Sga"/>
+                                                        <constraint firstItem="g5U-HO-IEa" firstAttribute="top" secondItem="yoo-5d-xGv" secondAttribute="bottom" constant="8" id="eI0-9v-Sga"/>
                                                         <constraint firstAttribute="trailing" secondItem="Y6w-jV-OlZ" secondAttribute="trailing" constant="10" id="f1y-xn-vjE"/>
                                                         <constraint firstItem="oRc-4e-h8C" firstAttribute="centerY" secondItem="yoo-5d-xGv" secondAttribute="centerY" id="fC7-Zk-f4p"/>
                                                         <constraint firstItem="sDb-hg-teO" firstAttribute="centerY" secondItem="jPh-Ig-efe" secondAttribute="centerY" id="mfS-UY-5Lj"/>

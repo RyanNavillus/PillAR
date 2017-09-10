@@ -121,6 +121,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
     @objc func handleTap(gestureRecognize: UITapGestureRecognizer) {
         
         print("Screen Hit")
+        print("1----------------")
         let cardHitTestResults = sceneView.hitTest(gestureRecognize.location(in: sceneView), options: nil)
 
         for result in cardHitTestResults {
@@ -158,6 +159,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
         let arHitTestResults : [ARHitTestResult] = sceneView.hitTest(screenCentre, types: [.featurePoint]) // Alternatively, we could use '.existingPlaneUsingExtent' for more grounded hit-test-points.
         
         if let closestResult = arHitTestResults.first {
+            print("2----------------")
             // Get Coordinates of HitTest
             let transform : matrix_float4x4 = closestResult.worldTransform
             //sceneView.session.add(anchor: ARAnchor(transform: transform))
@@ -184,7 +186,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
             })
             
             print("Sending Image")
-            if fetchingResults == true{
+            if fetchingResults == true {
                 return
             } else {
                 fetchingResults = true
@@ -195,7 +197,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
                 self.fetchingResults = false
                 self.activityIndicator.stopAnimating()
                 if let result = result {
-                    
+                    print("3----------------")
                     var pillsTakenToday = 0
                     var lastTakenTime = Date(timeIntervalSince1970: 0)
                     var actionStatement = ""
@@ -247,7 +249,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
                     lastTakenLabel.textAlignment = .left
                     lastTakenLabel.numberOfLines = 1
                     lastTakenLabel.font = UIFont(name: "Avenir-HeavyOblique", size: 42)
-                    lastTakenLabel.text = "Last taken \(Date().hours(from: lastTakenTime)) hours ago"
+                    lastTakenLabel.text = "Last taken \(lastTakenTime.timestringFromNow()))"
                     lastTakenLabel.backgroundColor = .clear
                     if lastTakenTime.timeIntervalSince1970 != 0 {
                         imageView.addSubview(lastTakenLabel)
@@ -291,10 +293,11 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
                     infoNode.addChildNode(buttonNode)
                     buttonNode.position = infoNode.position
                     buttonNode.position.y -= (0.125)
+                    
                     textNode.constraints = [billboardConstraint]
-                    textNode.runAction(SCNAction.scale(to: 0.0, duration: 0) )
+                    textNode.runAction(SCNAction.scale(to: 0.0, duration: 0))
                     backNode.runAction(SCNAction.scale(to: 0.0, duration: 0))
-                    infoNode.runAction(SCNAction.scale(to: 0.0, duration: 0) )
+                    infoNode.runAction(SCNAction.scale(to: 0.0, duration: 0))
                     textNode.runAction(SCNAction.fadeOpacity(to: 0.0, duration: 0))
                     backNode.runAction(SCNAction.fadeOpacity(to: 0.0, duration: 0))
                     infoNode.runAction(SCNAction.fadeOpacity(to: 0.0, duration: 0))

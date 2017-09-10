@@ -78,7 +78,7 @@ def getLogo(medication):
     medication += " logos"
     payload = {'q': str(medication)}
     headers = {'Ocp-Apim-Subscription-Key': 'c27264578ba449bcbca148baa3466b9e'}
-    r = requests.get(url, params=payload, headers=headers)
+    r = requests.get(url, params=payload, headers=headers).json()
     imgURL = r['value'][0]['contentUrl']
     imgURLJSON = {'url': imgURL}
     return json.dumps(imgURLJSON)

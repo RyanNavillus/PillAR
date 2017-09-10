@@ -134,7 +134,6 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
                     print("Malformed node name")
                     continue
                 }
-                print("PLUS ONE MOTHERFUCKER")
                 DataManager.shared().addPillHistory(drugName: components[0], maxDailyDosage: Int(components[1])!)
                 return
             }

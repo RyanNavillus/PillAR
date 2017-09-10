@@ -36,8 +36,7 @@ def getMedicationInfo(medication):
         if "Drug Monograph" not in searchResultCategory:
             if 'alka' in medication:
                 return json.dumps({'instructions': "Fully chew then swallow 1-2 chewable tablets as symptoms occur. Do not take more than 5 chewable tablets in a 24-hour period", "maximum": 5})
-            else:
-                return json.dumps({'error':'try again'})
+            return json.dumps({'error':'try again'})
 
         # medicationURL = searchResultList[0]
         medicationURL = searchResultList[0]

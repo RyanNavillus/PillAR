@@ -40,6 +40,9 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
         tapGesture.delegate = self
         view.addGestureRecognizer(tapGesture)
         
+        HasuraAPIManager.shared().getLogoForDrug(drug: "Advil") { (image) in
+            print("Returned")
+        }
         
         
         if let mainHistoryVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MainHistoryVC") as? MainHistoryViewController{
@@ -300,7 +303,7 @@ enum HistoryVisible {
 extension ARViewController {
     
     func toggle(state: HistoryVisible){
-        if state != DataManager.shared().historyState, let mainHistoryVC = self.mainHistoryVC {
+        if let mainHistoryVC = self.mainHistoryVC {
             print("Animating History State Change")
             UIView.animate(withDuration: 1.0, delay: 0.0, usingSpringWithDamping: 0.9, initialSpringVelocity: 5.0, options: .curveEaseOut, animations: {
                 

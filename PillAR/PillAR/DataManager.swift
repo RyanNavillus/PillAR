@@ -47,7 +47,7 @@ class DataManager {
     
     
     var pillHistoryData:[HistoryData] = [HistoryData]()
-    
+    var logoCache = [String:UIImage]()
     
     
 }

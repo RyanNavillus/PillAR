@@ -8,10 +8,11 @@
 
 import Foundation
 import SwiftyJSON
+import Alamofire
 
 class HasuraAPIManager {
     var hasuraURL: URL {
-        return URL(string: "https://app.admirable43.hasura-app.io/medication/")!
+        return URL(string: "https://app.admirable43.hasura-app.io/")!
     }
     let session = URLSession.shared
     
@@ -29,7 +30,7 @@ class HasuraAPIManager {
         
         // Create our request URL
         
-        var request = URLRequest(url: hasuraURL.appendingPathComponent(drug))
+        var request = URLRequest(url: hasuraURL.appendingPathComponent("medication/").appendingPathComponent(drug))
         request.httpMethod = "GET"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
@@ -72,4 +73,48 @@ class HasuraAPIManager {
         }
     }
     
+    
+    func getLogoForDrug( drug: String, completionHandler: @escaping (UIImage)-> ()){
+        if let cachedImage = DataManager.shared().logoCache[drug.lowercased()]{
+            completionHandler(cachedImage)
+            return
+        }
+        
+        Alamofire.request(hasuraURL.appendingPathComponent("logo/\(drug)")).responseJSON { (response) in
+            if let json = response.data {
+                let data = JSON(data: json)
+                print(data)
+                if let urlStr = data["url"].string{
+                    let url = URL(string: urlStr)!
+                    self.downloadImage(url: url, searchTerm: drug, completionHandler: completionHandler)
+                }
+            }
+
+        }
+        
+        
+    }
+    
+    func downloadImage(url: URL, searchTerm:String, completionHandler:@escaping (UIImage)->()) {
+        print("Download Started")
+        print(url)
+        getDataFromUrl(url: url) { (data, response, error)  in
+            guard let data = data, error == nil else { return }
+            print(response?.suggestedFilename ?? url.lastPathComponent)
+            print("Download Finished")
+            if let image =  UIImage(data: data){
+                DataManager.shared().logoCache[searchTerm.lowercased()] = image
+                DispatchQueue.main.async() { () -> Void in
+                    completionHandler(image)
+                }
+            }
+        }
+    }
+    
+    func getDataFromUrl(url: URL, completion: @escaping (_ data: Data?, _  response: URLResponse?, _ error: Error?) -> Void) {
+        URLSession.shared.dataTask(with: url) {
+            (data, response, error) in
+            completion(data, response, error)
+            }.resume()
+    }
 }

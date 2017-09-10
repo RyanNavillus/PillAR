@@ -85,7 +85,7 @@ extension AllHistoryViewController: UITableViewDelegate, UITableViewDataSource {
             singlePillVC.view.frame = UIScreen.main.bounds
            singlePillVC.drugTitleLabel.text = data.drugName.capitalized
             singlePillVC.loadPillHistory()
-            
+            singlePillVC.initializeInfo()
            self.present(singlePillVC, animated: true, completion: nil)
         }
     }

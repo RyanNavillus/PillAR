@@ -22,8 +22,19 @@
 	<string>1337</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Save training data</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Immersive AR Medical Tracking</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Save training data</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Save training data</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -35,8 +46,6 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
@@ -45,16 +54,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>NSAppleMusicUsageDescription</key>
-	<string>Save training data</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Save training data</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Save training data</string>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
-	</dict>
 </dict>
 </plist>

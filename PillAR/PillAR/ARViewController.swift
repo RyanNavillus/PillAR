@@ -247,7 +247,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
                     lastTakenLabel.textAlignment = .left
                     lastTakenLabel.numberOfLines = 1
                     lastTakenLabel.font = UIFont(name: "Avenir-HeavyOblique", size: 42)
-                    lastTakenLabel.text = "Last taken \(Date().hours(from: lastTakenTime)) hours ago"
+                    lastTakenLabel.text = "Last taken \(lastTakenTime.timestringFromNow()))"
                     lastTakenLabel.backgroundColor = .clear
                     if lastTakenTime.timeIntervalSince1970 != 0 {
                         imageView.addSubview(lastTakenLabel)

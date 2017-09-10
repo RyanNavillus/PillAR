@@ -37,7 +37,7 @@ class HasuraAPIManager {
         
         // Create our request URL
         
-        var request = URLRequest(url: hasuraURL.appendingPathComponent("medication/").appendingPathComponent(drug))
+        var request = URLRequest(url: hasuraURL.appendingPathComponent("medication/").appendingPathComponent(drug.lowercased()))
         request.httpMethod = "GET"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         

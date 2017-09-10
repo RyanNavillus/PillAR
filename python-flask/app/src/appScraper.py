@@ -72,6 +72,17 @@ def getMedicationInfo(medication):
     #frequency, max, num of mg per pill
     return json.dumps(medicationInfo)
 
+@app.route("/logo/<medication>")
+def getLogo(medication):
+    url="https://www.google.com/search?q=%s+logos"
+    url=url%(medication)
+    request = urllib2.urlopen(url)
+    result = request.read()
+    soup = BeautifulSoup(result, 'html.parser')
+    imgResult = soup.find('img', class_="irc_mi")
+    imgURL = imgResult.['src']
+    return json.dumps({'url' : imgURL})
+
 # Returns an integer number of pills needed daily given json input
 def findMax(text):
     if 'once daily' in text or 'once a day' in text or 'one a day' in text or 'one time a day' in text or '1 a day' in text:

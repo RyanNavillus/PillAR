@@ -9,12 +9,16 @@
 import UIKit
 
 let pillTakenUpdateNotification = Notification.Name("PillTakenNotification")
+let toggleHistoryNotification = Notification.Name("ToggleHistoryNotification")
+let toggleHistoryActionNotification = Notification.Name("ToggleHistoryActionNotification")
 
 class MainHistoryViewController: UIViewController {
 
+    @IBOutlet weak var topSharedView: UIView!
     @IBOutlet weak var lastPillLabel: UILabel!
     @IBOutlet weak var lastPillTimeLabel: UILabel!
-    
+    @IBOutlet weak var toggleHistoryButton: UIButton!
+    @IBOutlet weak var toggleHistoryArrowImage: UIImageView!
     
     @IBOutlet weak var subsectionView: UIView!
     var historyTableVC:AllHistoryViewController?
@@ -22,7 +26,7 @@ class MainHistoryViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        
+        self.topSharedView.layer.shadowColor = UIColor(white: 0.3, alpha: 1.0).cgColor
         
         if let historyVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "HistoryTableVC") as? AllHistoryViewController{
                historyTableVC = historyVC
@@ -35,7 +39,22 @@ class MainHistoryViewController: UIViewController {
         refreshLastPillTaken()
         
         NotificationCenter.default.addObserver(self, selector: #selector(MainHistoryViewController.refreshLastPillTaken), name: pillTakenUpdateNotification, object: nil)
-        
+        NotificationCenter.default.addObserver(forName: toggleHistoryNotification, object: nil, queue: nil) { (notification) in
+            UIView.transition(with: self.toggleHistoryArrowImage, duration: 0.3, options: .transitionCrossDissolve, animations: {
+                if DataManager.shared().historyState == .Visible{
+                    self.toggleHistoryArrowImage.image = #imageLiteral(resourceName: "downArrow")
+                }else{
+                    self.toggleHistoryArrowImage.image = #imageLiteral(resourceName: "upArrow")
+                }
+            }, completion: nil)
+            UIView.transition(with: self.toggleHistoryButton, duration: 0.3, options: .transitionCrossDissolve, animations: {
+                if DataManager.shared().historyState == .Visible{
+                    self.toggleHistoryButton.setTitle("Scan Pills", for: .normal)
+                }else{
+                    self.toggleHistoryButton.setTitle("View Complete History", for: .normal)
+                }
+            }, completion: nil)
+        }
     }
     
     func refreshLastPillTaken(){
@@ -50,6 +69,9 @@ class MainHistoryViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-
+    @IBAction func toggleHistoryButtonClicked(_ sender: Any) {
+        NotificationCenter.default.post(name: toggleHistoryActionNotification, object: nil)
+    }
+    
 }
 

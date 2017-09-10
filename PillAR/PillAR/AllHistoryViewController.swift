@@ -18,12 +18,14 @@ class AllHistoryViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.separatorStyle = .none
-        
+    let header = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 25))
+        header.backgroundColor = nil
+        tableView.tableHeaderView = header
         
         // Do any additional setup after loading the view.
         self.view.backgroundColor = UIColor(red: 0.961, green: 0.965, blue: 0.976, alpha: 1.00)
         self.tableView.backgroundColor = nil
-        let line = UIView(frame: CGRect(x: 191, y: 0, width: 10, height: self.view.frame.height))
+        let line = UIView(frame: CGRect(x: 189, y: 0, width: 8, height: self.view.frame.height))
         line.backgroundColor = UIColor(red: 0.867, green: 0.878, blue: 0.918, alpha: 1.00)
         self.view.insertSubview(line, belowSubview: tableView)
     }

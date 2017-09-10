@@ -14,6 +14,8 @@ class DataManager {
         return dataManager
     }()
     
+    var historyState:HistoryVisible = .Hidden
+    
     class func shared() -> DataManager {
         return sharedInstance
     }

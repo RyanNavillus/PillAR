@@ -5,10 +5,15 @@ from bs4 import BeautifulSoup
 import re, requests
 
 dosageHeadings = ["Adult:", "Adults and Children:"]
-
+listToIgnore = ["plastic-bottle", "bottle", "drink", "liquid", "orange-drink", "orange-soft-drink", "lotion", "tablet", "nail", "flavor", "font", "food-additive", "human-leg", "junk-food", "gummy-candy", "material", "tablet-computer"]
 @app.route("/")
 @app.route("/medication/<medication>")
 def getMedicationInfo(medication):
+
+    medication.lower()
+
+    if medication in listToIgnore:
+        return json.dumps({'error':'try again'})
 
     url="http://www.empr.com/search/%s/"
     url=url%(medication)
@@ -22,23 +27,30 @@ def getMedicationInfo(medication):
         return json.dumps({'error':'try again'})
     else:
         searchResults = soup.find_all('h1')
-        searchResultList = []
+        #searchResultList = []
+        searchResultCategory = ""
+
         for i in searchResults:
             if i.a.get('href'):
-                searchResultList.append(str(i.a.get('href')))
+                #searchResultList.append(str(i.a.get('href')))
+                searchResultURL = str(i.a.get('href'))
+                searchResultCategory = str(i.find_next('div', class_='category').get_text())
+                searchResultHeader = str(i.a.get_text())
+                break
+
+        if "Drug Monograph" not in searchResultCategory and medication not in searchResultHeader:
+            if 'alka' in medication:
+                return json.dumps({'instructions': "Fully chew then swallow 1-2 chewable tablets as symptoms occur. Do not take more than 5 chewable tablets in a 24-hour period", "maximum": 5})
+            return json.dumps({'error':'try again'})
 
         # medicationURL = searchResultList[0]
-        medicationURL = searchResultList[0]
+        medicationURL = searchResultURL
 
         request1 = urllib2.urlopen(medicationURL)
         result1 = request1.read()
         soup1 = BeautifulSoup(result1, 'html.parser')
 
-        if not soup1.find('section', class_='drug-monograph-section'):
-            if 'alka' in medication:
-                return json.dumps({'instructions': "Fully chew then swallow 1-2 chewable tablets as symptoms occur. Do not take more than 5 chewable tablets in a 24-hour period", "maximum": 5})
-            else:
-                return json.dumps({'error':'try again'})
+        
 
         # if 'tylenol' in medication:
         #     return json.dumps({'instructions': ""})
@@ -75,7 +87,12 @@ def getMedicationInfo(medication):
                   
             # medicationInfo['mg per pill regex'] = re.search(r'(?:\d*\.)?\d+mg', paragraphs[pIndex].get_text()).group()
             pIndex += 1
-
+        if medication == "advil":
+            medicationInfo['maximum'] = 6
+        if medication == "tums":
+            medicationInfo['maximum'] = 7
+        if medication == "motrin":
+            medicationInfo['maximum'] = 6
     #return newHTML
     #frequency, max, num of mg per pill
     return json.dumps(medicationInfo)
@@ -85,7 +102,7 @@ def getLogo(medication):
     url = "https://api.cognitive.microsoft.com/bing/v5.0/images/search"
     medication += " logos"
     payload = {'q': str(medication)}
-    headers = {'Ocp-Apim-Subscription-Key': 'c27264578ba449bcbca148baa3466b9e'}
+    headers = {'Ocp-Apim-Subscription-Key': '7ff76866f7e849f090d2e89e5f0e21ea'}
     r = requests.get(url, params=payload, headers=headers).json()
     imgURL = r['value'][0]['contentUrl']
     imgURLJSON = {'url': imgURL}

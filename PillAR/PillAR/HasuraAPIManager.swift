@@ -112,7 +112,7 @@ class HasuraAPIManager {
         print(url)
         getDataFromUrl(url: url) { (data, response, error)  in
             guard let data = data, error == nil else { return }
-            print(response?.suggestedFilename ?? url.lastPathComponent)
+//            print(response?.suggestedFilename ?? url.lastPathComponent)
             print("Download Finished")
             if let image =  UIImage(data: data){
                 DataManager.shared().logoCache[searchTerm.lowercased()] = image

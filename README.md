@@ -28,13 +28,17 @@ We created an iOS app in Swift using ARKit. We collect data on the pill bottles 
 ## Accomplishments that we're proud of
 This is our first time creating an app using Apple's ARKit. We also did a lot of research to find a suitable website to scrape medication dosage information from and then had to process that information to make it easier to understand. 
 
-![alt tag](https://raw.githubusercontent.com/Averylamp/PillAR/master/Images/screen3.jpg)
+![alt tag](https://raw.githubusercontent.com/Averylamp/PillAR/master/Images/screen3.png)
 
-![alt tag](https://raw.githubusercontent.com/Averylamp/PillAR/master/Images/screen4.jpg)
+### Screen showing the history of all pills taken
 
-![alt tag](https://raw.githubusercontent.com/Averylamp/PillAR/master/Images/screen5.jpg)
+![alt tag](https://raw.githubusercontent.com/Averylamp/PillAR/master/Images/screen4.png)
 
+### Screen showing all of the different pills taken and most recently taken time
 
+![alt tag](https://raw.githubusercontent.com/Averylamp/PillAR/master/Images/screen5.png)
+
+### Screen showing a single pill in detail, with instructions on how to take the pill
 
 ## What's next for PillAR
 In the future, we hope to be able to get more accurate medication information for each specific bottle (such as pill size).  We would like to improve the bottle recognition capabilities, by maybe writing our own classifiers or training a data set.  We would also like to add features like notifications to remind you of good times to take pills to keep you even healthier.

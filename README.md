@@ -7,7 +7,7 @@ AR Pill tracking app
 
 [_See the full video here_](https://www.youtube.com/watch?v=EThrHxm1ga0&index=3&list=PLyC3kmCiJ2x31ZLjuB7RogEvyamrkSOo9)
 
-![alt tag](https://raw.githubusercontent.com/Averylamp/TravelAR/master/Images/screen1.jpg)
+![alt tag](https://raw.githubusercontent.com/Averylamp/PillAR/master/Images/screen1.jpg)
 
 ## Inspiration
 
@@ -17,7 +17,7 @@ A couple weeks ago, a friend was hospitalized for taking Advil–she accidentall
 
 It can be difficult to remember when to take your medications, especially when there are countless different restrictions for each different medicine.  For people that depend on their medication to live normally, remembering and knowing when it is okay to take their medication is a difficult challenge.  Many drugs have very specific restrictions (eg. no more than one pill every 8 hours, 3 max per day, take with food or water), which can be hard to keep track of.  PillAR helps you keep track of when you take your medicine and how much you take to keep you safe by not over or under dosing.
 
-![alt tag](https://raw.githubusercontent.com/Averylamp/TravelAR/master/Images/screen2.jpg)
+![alt tag](https://raw.githubusercontent.com/Averylamp/PillAR/master/Images/screen2.jpg)
 
 
 We also saw a need for a medicine tracker due to the aging population and the number of people who have many different medications that they need to take.  According to health studies in the U.S., 23.1% of people take three or more medications in a 30 day period and 11.9% take 5 or more.   That is over 75 million U.S. citizens that could use PillAR to keep track of their numerous medicines.
@@ -28,11 +28,11 @@ We created an iOS app in Swift using ARKit. We collect data on the pill bottles 
 ## Accomplishments that we're proud of
 This is our first time creating an app using Apple's ARKit. We also did a lot of research to find a suitable website to scrape medication dosage information from and then had to process that information to make it easier to understand. 
 
-![alt tag](https://raw.githubusercontent.com/Averylamp/TravelAR/master/Images/screen3.jpg)
+![alt tag](https://raw.githubusercontent.com/Averylamp/PillAR/master/Images/screen3.jpg)
 
-![alt tag](https://raw.githubusercontent.com/Averylamp/TravelAR/master/Images/screen4.jpg)
+![alt tag](https://raw.githubusercontent.com/Averylamp/PillAR/master/Images/screen4.jpg)
 
-![alt tag](https://raw.githubusercontent.com/Averylamp/TravelAR/master/Images/screen5.jpg)
+![alt tag](https://raw.githubusercontent.com/Averylamp/PillAR/master/Images/screen5.jpg)
 
 
 

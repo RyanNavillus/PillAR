@@ -65,7 +65,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
         super.viewWillAppear(animated)
         
         // Create a session configuration
-        let configuration = ARWorldTrackingSessionConfiguration()
+        let configuration = ARWorldTrackingConfiguration()
         // Enable plane detection
         
         configuration.planeDetection = .horizontal
@@ -164,6 +164,7 @@ class ARViewController: UIViewController, ARSCNViewDelegate {
             let transform : matrix_float4x4 = closestResult.worldTransform
             //sceneView.session.add(anchor: ARAnchor(transform: transform))
             let worldCoord = SCNVector3Make(transform.columns.3.x, transform.columns.3.y, transform.columns.3.z)
+            
             let pixbuff : CVPixelBuffer? = (sceneView.session.currentFrame?.capturedImage)
             if pixbuff == nil { return }
             let ciImage = CIImage(cvPixelBuffer: pixbuff!)
@@ -382,7 +383,6 @@ extension ARViewController {
                 NotificationCenter.default.post(name: toggleHistoryNotification, object: nil)
             })
             DataManager.shared().historyState = state
-            
         }
     }
     
